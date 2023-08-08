@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:evaluation_one/utils/string.dart';
 
 class NamedRouteThree extends StatelessWidget {
   const NamedRouteThree({super.key});
@@ -10,12 +11,12 @@ class NamedRouteThree extends StatelessWidget {
         padding:const EdgeInsets.only(top: 400.0,left: 120), 
         child: Column(
           children: [
-                const Text('SCREEN 3'),
+                const Text(screenThree),
             ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Go to Route2'),
+                child: const Text(gotoRouteTwo),
                 ),
                 // Text('Received value: $value')
             const SizedBox(height: 50,),
@@ -24,7 +25,7 @@ class NamedRouteThree extends StatelessWidget {
               onPressed: (){
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               }, 
-            child: const Text('Go to First screeen'),
+            child: const Text(gotoFirstScreen),
             ),
           ],
           

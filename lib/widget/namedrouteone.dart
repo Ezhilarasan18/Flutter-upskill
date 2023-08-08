@@ -1,6 +1,7 @@
 import 'package:evaluation_one/widget/namedroutetwo.dart';
 import 'package:flutter/material.dart';
 import 'package:evaluation_one/navigation/navigation_provider.dart';
+import 'package:evaluation_one/utils/string.dart';
 
 class NamedRouteOne extends StatefulWidget {
   const NamedRouteOne({super.key});
@@ -33,15 +34,15 @@ class _NamedRouteOneState extends State<NamedRouteOne> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('SCREEN 1'),
+          const Text(screenOne),
           Center(
             child: ElevatedButton(
                 onPressed: _goToScreenTwo,
-                child: const Text('Go to Route2')),
+                child: const Text(gotoRouteTwo)),
           ),
           receivedValue != null
               ? Text('Received value:  $receivedValue')
-              : const Text('Received value: Value yet to receive'),
+              : const Text(yettoReceive),
 
           const SizedBox(
             height: 50,
@@ -50,7 +51,7 @@ class _NamedRouteOneState extends State<NamedRouteOne> {
               onPressed: () {
                 NavigationProvider.pushToSecondScreen(context);
               },
-              child: const Text('Go to Route 2')),
+              child: const Text(gotoRouteTwo)),
           const SizedBox(
             height: 50,
           ),
