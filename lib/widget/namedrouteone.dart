@@ -21,7 +21,6 @@ class _NamedRouteOneState extends State<NamedRouteOne> {
               const NamedRouteTwo(value: 'I am from screen1')),
     );
     if (result != null) {
-      print(result);
       setState(() {
         receivedValue = result;
       });

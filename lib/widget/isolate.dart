@@ -38,7 +38,6 @@ useIsolate() async {
   }
   final response = await receivePort.first;
 
-  print('Result: $response');
 }
 
 int runHeavyTaskIWithIsolate(List<dynamic> args) {
@@ -55,6 +54,5 @@ int runHeavyTaskWithOutIsolate(int count) {
   for (var i = 0; i < count; i++) {
     value += i;
   }
-  print(value);
   return value;
 }

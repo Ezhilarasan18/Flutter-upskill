@@ -17,7 +17,6 @@ class Parrot extends Bird{
   const Parrot({super.key});
   
   void speak(){
-    print('The parrot can speak');
   }
 
 

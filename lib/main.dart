@@ -10,7 +10,9 @@ import 'package:evaluation_one/widget/customappbar.dart';
 import 'package:evaluation_one/widget/nullsafety.dart';
 import 'package:evaluation_one/widget/routeone.dart';
 import 'package:evaluation_one/widget/namedroutethree.dart';
-
+import 'package:evaluation_one/widget/ongeneraterouteone.dart';
+import 'package:evaluation_one/widget/ongenerateroutetwo.dart';
+import 'package:evaluation_one/widget/ongenerateroutethree.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo, 
+        primarySwatch: Colors.indigo,
       ),
       // home:const Loginscreen()
       // home:const MyHomePage()
@@ -40,10 +42,30 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const NamedRouteOne(),
-        '/second': (context) =>  const NamedRouteTwo(value:'I am from screen1'),
+        '/second': (context) => const NamedRouteTwo(value: 'I am from screen1'),
         '/third': (context) => const NamedRouteThree(),
       },
-    );  
+
+      // onGenereateRoute
+
+      // onGenerateRoute: (settings) {
+      //   if (settings.name == '/screentwo') {
+      //     // to get a value as string
+      //     final dynamicData = settings.arguments as String;
+      //     return MaterialPageRoute(
+      //       builder: (context) => OngenerateRouteTwo(value: dynamicData),
+      //     );
+      //   }
+      //    if (settings.name == '/screenthree') {
+      //     final arrayData=settings.arguments as List;
+      //     return MaterialPageRoute(
+      //       builder: (context) =>  OngenerateRouteThree(value:arrayData),
+      //     );
+      //   }
+      //   return null;
+      // },
+      // home: const OngenerateRouteOne(),
+    );
   }
 }
 
