@@ -36,8 +36,7 @@ class _NamedRouteOneState extends State<NamedRouteOne> {
           const Text(screenOne),
           Center(
             child: ElevatedButton(
-                onPressed: _goToScreenTwo,
-                child: const Text(gotoRouteTwo)),
+                onPressed: _goToScreenTwo, child: const Text(gotoRouteTwo)),
           ),
           receivedValue != null
               ? Text('Received value:  $receivedValue')

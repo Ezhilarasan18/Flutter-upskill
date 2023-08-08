@@ -7,30 +7,39 @@ class NamedRouteThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Go Back'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Padding(
-        padding:const EdgeInsets.only(top: 400.0,left: 120), 
+        padding: const EdgeInsets.only(top: 400.0, left: 120),
         child: Column(
           children: [
-                const Text(screenThree),
+            const Text(screenThree),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(gotoRouteTwo),
-                ),
-                // Text('Received value: $value')
-            const SizedBox(height: 50,),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(gotoRouteTwo),
+            ),
+            // Text('Received value: $value')
+            const SizedBox(
+              height: 50,
+            ),
 
             TextButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
-              }, 
-            child: const Text(gotoFirstScreen),
+              },
+              child: const Text(gotoFirstScreen),
             ),
           ],
-          
         ),
-         
       ),
     );
   }
