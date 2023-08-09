@@ -13,6 +13,7 @@ import 'package:evaluation_one/widget/namedroutethree.dart';
 import 'package:evaluation_one/widget/ongeneraterouteone.dart';
 import 'package:evaluation_one/widget/ongenerateroutetwo.dart';
 import 'package:evaluation_one/widget/ongenerateroutethree.dart';
+import 'package:evaluation_one/widget/counter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,48 +25,53 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
-      // home:const Loginscreen()
-      // home:const MyHomePage()
-      // home:const StreamClass()
-      // home:const Stackexample()
-      // home:const Nestedscroll()
-      // home:const NullSafety()
-      // MaterialPageRoute example
-      // home:const RouteOne()
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.indigo,
+        ),
+        // home:const Loginscreen()
+        // home:const MyHomePage()
+        // home:const StreamClass()
+        // home:const Stackexample()
+        // home:const Nestedscroll()
+        // home:const NullSafety()
+        
+        // MaterialPageRoute example
+        // home:const RouteOne()
+        home: const Counter()
+        // home: const CounterPage()
 
-      // NamedRoute example
+        
 
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const NamedRouteOne(),
-        '/second': (context) => const NamedRouteTwo(value: 'I am from screen1'),
-        '/third': (context) => const NamedRouteThree(),
-      },
+        // NamedRoute example
 
-      // onGenereateRoute
+        // initialRoute: '/',
+        // routes: {
+        //   '/': (context) => const NamedRouteOne(),
+        //   '/second': (context) => const NamedRouteTwo(value: 'I am from screen1'),
+        //   '/third': (context) => const NamedRouteThree(),
+        // },
 
-      // onGenerateRoute: (settings) {
-      //   if (settings.name == '/screentwo') {
-      //     // to get a value as string
-      //     final dynamicData = settings.arguments as String;
-      //     return MaterialPageRoute(
-      //       builder: (context) => OngenerateRouteTwo(value: dynamicData),
-      //     );
-      //   }
-      //    if (settings.name == '/screenthree') {
-      //     final arrayData=settings.arguments as List;
-      //     return MaterialPageRoute(
-      //       builder: (context) =>  OngenerateRouteThree(value:arrayData),
-      //     );
-      //   }
-      //   return null;
-      // },
-      // home: const OngenerateRouteOne(),
-    );
+        // onGenereateRoute
+
+        // onGenerateRoute: (settings) {
+        //   if (settings.name == '/screentwo') {
+        //     // to get a value as string
+        //     final dynamicData = settings.arguments as String;
+        //     return MaterialPageRoute(
+        //       builder: (context) => OngenerateRouteTwo(value: dynamicData),
+        //     );
+        //   }
+        //    if (settings.name == '/screenthree') {
+        //     final arrayData=settings.arguments as List;
+        //     return MaterialPageRoute(
+        //       builder: (context) =>  OngenerateRouteThree(value:arrayData),
+        //     );
+        //   }
+        //   return null;
+        // },
+        // home: const OngenerateRouteOne(),
+        );
   }
 }
 
