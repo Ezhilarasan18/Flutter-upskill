@@ -30,7 +30,8 @@ class _ProductScreenState extends State<ProductScreen> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
-          return Container(
+          return 
+          Container(
             padding: const EdgeInsets.only(top: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
