@@ -14,6 +14,8 @@ import 'package:evaluation_one/widget/ongeneraterouteone.dart';
 import 'package:evaluation_one/widget/ongenerateroutetwo.dart';
 import 'package:evaluation_one/widget/ongenerateroutethree.dart';
 import 'package:evaluation_one/widget/counter.dart';
+import 'package:evaluation_one/widget/taskscreen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -38,8 +40,11 @@ class MyApp extends StatelessWidget {
         
         // MaterialPageRoute example
         // home:const RouteOne()
-        home: const Counter()
-        // home: const CounterPage()
+        // home: const Counter()
+        // home: const CounterPage()0
+        // home:const TaskScreen()
+        home:const TaskScreen()
+
 
         
 
