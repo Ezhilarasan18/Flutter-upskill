@@ -10,9 +10,15 @@ class Counter extends StatefulWidget {
 }
 
 class _CounterState extends State<Counter> {
-  final counterBloc = CounterBloc();
+  // dynamic counterBloc;
+  // @override
+  // void initState() {
+  // counterBloc = CounterBloc();
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
+    final counterBloc=CounterBloc();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bloc example'),
@@ -54,7 +60,7 @@ class _CounterState extends State<Counter> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CounterScreenTwo()),
+                      builder: (context) =>  CounterScreenTwo(bloc:counterBloc)),
                 );
               },
               child: const Text('Go to screen2'))

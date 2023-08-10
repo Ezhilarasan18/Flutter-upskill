@@ -5,7 +5,7 @@ enum CounterAction { Increment, Decrement, Reset }
 class CounterBloc {
   int counter = 0;
 
-  final _stateStreamController = StreamController<int>();
+  final _stateStreamController = StreamController<int>.broadcast();
   StreamSink<int> get counterSink => _stateStreamController.sink;
   Stream<int> get counterStream => _stateStreamController.stream;
 
