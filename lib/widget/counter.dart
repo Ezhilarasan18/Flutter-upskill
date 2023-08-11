@@ -10,20 +10,40 @@ class Counter extends StatefulWidget {
 }
 
 class _CounterState extends State<Counter> {
-  // dynamic counterBloc;
-  // @override
-  // void initState() {
-  // counterBloc = CounterBloc();
-  //   super.initState();
-  // }
+  dynamic counterBloc;
+  late dynamic _streamSubscription;
+
+  @override
+  void initState() {
+  counterBloc = CounterBloc();
+      _streamSubscription = counterBloc.counterStream.listen(
+      (data) {
+        // Do something with the stream data
+        print(data);
+      },
+      onError: (error) {
+        // Handle error
+        print('Stream error: $error');
+      },
+      onDone: () {
+        // Stream is done emitting data
+        print('Stream done');
+      },
+    );
+    print('result$_streamSubscription');
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
-    final counterBloc=CounterBloc();
+    // final counterBloc=CounterBloc();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bloc example'),
       ),
-      body: Column(
+      body:
+      // Hero(tag: 123, child: child),
+       Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           StreamBuilder(
@@ -35,19 +55,19 @@ class _CounterState extends State<Counter> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FloatingActionButton(
+              TextButton(
                 onPressed: () {
                   counterBloc.eventSink.add(CounterAction.Increment);
                 },
                 child: const Icon(Icons.add),
               ),
-              FloatingActionButton(
+              TextButton(
                 onPressed: () {
                   counterBloc.eventSink.add(CounterAction.Decrement);
                 },
                 child: const Icon(Icons.remove),
               ),
-              FloatingActionButton(
+              TextButton(
                 onPressed: () {
                   counterBloc.eventSink.add(CounterAction.Reset);
                 },
@@ -55,7 +75,7 @@ class _CounterState extends State<Counter> {
               ),
             ],
           ),
-          TextButton(
+          ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,

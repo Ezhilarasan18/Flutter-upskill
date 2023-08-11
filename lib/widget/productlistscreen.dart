@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:evaluation_one/provider/taskprovider.dart';
-import 'package:flutter/foundation.dart';
+import 'package:evaluation_one/provider/productprovider.dart';
 import 'package:provider/provider.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final taskProvider = context.watch<TaskProvider>();
-    String selectedPriority = 'Clothes';
+    final prodProvider = context.watch<ProductProvider>();
+    String selectedCategory = 'Clothes';
     return Scaffold(
       appBar: AppBar(title: const Text('Task Manager')),
       body: ListView.builder(
-        itemCount: taskProvider.tasks.length,
+        itemCount: prodProvider.prods.length,
         itemBuilder: (context, index) {
-          final task = taskProvider.tasks[index];
+          final task = prodProvider.prods[index];
           return ListTile(
             title: Text(task.title),
             subtitle: Text(task.category),
@@ -22,7 +21,7 @@ class TaskListScreen extends StatelessWidget {
             trailing: IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
-                taskProvider.deleteTask(task);
+                prodProvider.deleteTask(task);
               },
             ),
           );
@@ -33,24 +32,24 @@ class TaskListScreen extends StatelessWidget {
           final title = await showDialog(
             context: context,
             builder: (BuildContext context) {
-              String taskTitle = '';
+              String productTitle = '';
               return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                 return AlertDialog(
-                  title: const Text('Add Task'),
+                  title: const Text('Add Product'),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextField(
                         onChanged: (value) {
-                          taskTitle = value;
+                          productTitle = value;
                         },
                       ),
                       DropdownButton<String>(
-                        value: selectedPriority,
+                        value: selectedCategory,
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedPriority = newValue!;
+                            selectedCategory = newValue!;
                           });
                         },
                         items: <String>['Clothes', 'Electronics', 'Vegetables']
@@ -68,7 +67,7 @@ class TaskListScreen extends StatelessWidget {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop(taskTitle);
+                        Navigator.of(context).pop(productTitle);
                       },
                       child: const Text('Add'),
                     ),
@@ -78,11 +77,11 @@ class TaskListScreen extends StatelessWidget {
             },
           );
 
-          if (title != null && title.isNotEmpty) {
-            taskProvider.addTask(Task(
+          if (title != null) {
+            prodProvider.addTask(Product(
                 id: DateTime.now().toString(),
                 title: title,
-                category: selectedPriority));
+                category: selectedCategory));
           }
         },
         child: const Icon(Icons.add),

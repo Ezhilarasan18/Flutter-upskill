@@ -13,13 +13,13 @@ class ProductBloc {
 
  List<Product> _products = [];
 
-  void addTask(Product prod) {
+  void addProduct(Product prod) {
     _products.add(prod);
     _productController.sink.add(_products);
   }
 
 
-  void deleteTask(String prodId) {
+  void deleteProduct(String prodId) {
     _products.removeWhere((prod) => prod.id == prodId);
     _productController.sink.add(_products);
   }

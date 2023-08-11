@@ -15,8 +15,8 @@ import 'package:evaluation_one/widget/ongenerateroutetwo.dart';
 import 'package:evaluation_one/widget/ongenerateroutethree.dart';
 import 'package:evaluation_one/widget/counter.dart';
 import 'package:evaluation_one/widget/productscreen.dart';
-import 'package:evaluation_one/provider/taskprovider.dart';
-import 'package:evaluation_one/widget/tasklistscreen.dart';
+import 'package:evaluation_one/provider/productprovider.dart';
+import 'package:evaluation_one/widget/productlistscreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
@@ -49,12 +49,14 @@ class MyApp extends StatelessWidget {
         // home:const TaskScreen()
 
         // home: const Counter()
-        // home:const ProductScreen()
-        // home: const Abc()
-        home: ChangeNotifierProvider(
-        create: (context) => TaskProvider(),
-        child: const TaskListScreen(),
-      ),
+
+
+        home:const ProductScreen()
+
+      //   home: ChangeNotifierProvider(
+      //   create: (context) => ProductProvider(),
+      //   child: const TaskListScreen(),
+      // ),
 
 
         

@@ -70,7 +70,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   },
                   child: InkWell(
                     onTap: () {
-                      productBloc.addTask(Product(
+                      productBloc.addProduct(Product(
                           generateUniqueId(), _inputText, _selectedCategory));
 
                       _clearTextField();
@@ -86,6 +86,13 @@ class _ProductScreenState extends State<ProductScreen> {
       },
     );
   }
+
+  //  dynamic productBloc;
+  // @override
+  // void initState() {
+  // productBloc = productBloc.productStream();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +150,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () {
-                    productBloc.deleteTask(product.id);
+                    productBloc.deleteProduct(product.id);
                   },
                 ),
               );

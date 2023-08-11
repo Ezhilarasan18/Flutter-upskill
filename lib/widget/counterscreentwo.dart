@@ -3,22 +3,41 @@ import 'package:evaluation_one/bloc/counter_bloc.dart';
 
 // ignore: must_be_immutable
 class CounterScreenTwo extends StatefulWidget {
-  const CounterScreenTwo({super.key,required this.bloc});
-final CounterBloc bloc;
+  const CounterScreenTwo({super.key, required this.bloc});
+  final CounterBloc bloc;
   @override
   State<CounterScreenTwo> createState() => _CounterScreenTwoState();
 }
 
 class _CounterScreenTwoState extends State<CounterScreenTwo> {
-  // dynamic counterBloc;
-  // @override
-  // void initState() {
-  //   counterBloc = CounterBloc();
-  //   counterBloc.counterStream.listen((event) {
-  //     print(event);
-  //   });
-  //   super.initState();
-  // }
+  dynamic counterBloc;
+  // dynamic _streamSubscription;
+  late dynamic _streamSubscription;
+  @override
+  void initState() {
+    super.initState();
+      print(widget.bloc.counter);
+
+    // widget.bloc.counterStream.listen((event) {
+    //   print('Event received$event');
+    // });
+
+     _streamSubscription = widget.bloc.counterStream.listen(
+      (data) {
+        // Do something with the stream data
+        print('ddddd$_streamSubscription');
+      },
+      onError: (error) {
+        // Handle error
+        print('Stream error: $error');
+      },
+      onDone: () {
+        // Stream is done emitting data
+        print('Stream done');
+      },
+    );
+    print(_streamSubscription);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +48,10 @@ class _CounterScreenTwoState extends State<CounterScreenTwo> {
         title: const Text('Second screen'),
       ),
       body: Center(
-        child: 
-        // StreamBuilder(
-        //     // initialData: 0,
-        //     stream: widget.bloc.counterStream,
-        //     builder: (context, snapshot) {
-        //       return Text('${snapshot.data}');
-        //     }),
-               Text('${widget.bloc.counter}')
-
-      ),
+          child:
+          // Hero(tag: 123, child: Text('${widget.bloc.counter}'),)
+              Text('${widget.bloc.counter}')
+              ),
     );
   }
 }
