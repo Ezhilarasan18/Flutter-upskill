@@ -24,9 +24,6 @@ class ProductBloc {
     _productController.sink.add(_products);
   }
 
-  void dispose() {
-    _productController.close();
-  }
 }
 
 final productBloc = ProductBloc();

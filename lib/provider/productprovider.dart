@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 class Product {
   final String id;
   final String title;
-  final bool isCompleted;
+  
   final String category;
 
-  Product({required this.id, required this.title, this.isCompleted = false,required this.category});
+  Product({required this.id, required this.title,required this.category});
 }
 
 class ProductProvider extends ChangeNotifier {
