@@ -18,7 +18,16 @@ import 'package:evaluation_one/widget/productscreen.dart';
 import 'package:evaluation_one/provider/productprovider.dart';
 import 'package:evaluation_one/widget/productlistscreen.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:evaluation_one/flutter_bloc/counter_bloc.dart';
+import 'package:evaluation_one/flutter_bloc/flutter_bloc_counter.dart';
+import 'package:evaluation_one/widget/apiexample.dart';
+import 'package:evaluation_one/widget/flutter_bloc_crud.dart';
+import 'package:evaluation_one/flutter_bloc/api_services.dart';
+import 'package:evaluation_one/flutter_bloc/flutter_api_bloc.dart';
+import 'package:evaluation_one/widget/flutter_bloc_home.dart';
+
 
 
 
@@ -31,6 +40,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+         final apiService = ApiService();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -42,24 +52,11 @@ class MyApp extends StatelessWidget {
         // home:const Stackexample()
         // home:const Nestedscroll()
         // home:const NullSafety()
-        
+
         // MaterialPageRoute example
         // home:const RouteOne()
         // home: const CounterPage()
         // home:const TaskScreen()
-
-        // home: const Counter()
-
-
-        home:const ProductScreen()
-
-      //   home: ChangeNotifierProvider(
-      //   create: (context) => ProductProvider(),
-      //   child: const ProductListScreen(),
-      // ),
-
-
-        
 
         // NamedRoute example
 
@@ -89,6 +86,28 @@ class MyApp extends StatelessWidget {
         //   return null;
         // },
         // home: const OngenerateRouteOne(),
+        // home: const Counter()
+
+        // home:const ProductScreen()
+
+        //   home: ChangeNotifierProvider(
+        //   create: (context) => ProductProvider(),
+        //   child: const ProductListScreen(),
+        // ),
+
+        // home: BlocProvider(
+        //   create: (context) => CounterBloc(),
+        //   child: const Flutterbloccounter(),
+        // ),
+
+        // home: const ApiCallExample(),
+
+        // home:const FlutterBloccrud()
+              home: BlocProvider(
+        create: (context) => ItemBloc(apiService)..fetchItems(),
+        child:const BlocHomeScreen(),
+      ),
+        
         );
   }
 }
