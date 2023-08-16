@@ -12,31 +12,25 @@ class BlocHomeScreen extends StatefulWidget {
 
 class _BlocHomeScreenState extends State<BlocHomeScreen> {
 
+//   @override
+//   void initState() {
+// final ItemBloc itemBloc;
+//       itemBloc =BlocProvider.of<ItemBloc>(context);
+
+//     super.initState();
+//   }
   @override
   Widget build(BuildContext context) {
-    // final CounterBloc counterBloc = BlocProvider.of<CounterBloc>(context);
-    final ItemBloc itemBloc=BlocProvider.of<ItemBloc>(context);
+    final ItemBloc itemBloc = BlocProvider.of<ItemBloc>(context);
     String _inputText = '';
     return Scaffold(
-      appBar: AppBar(title: const Text('BLoC Example')),
+      appBar: AppBar(title: const Text('Students Database')),
       body: BlocBuilder<ItemBloc, List<Item>>(
         builder: (context, itemList) {
-          // print('object${itemList[0]}');
-          // const Text('data');
           return ListView.builder(
             itemCount: itemList.length,
             itemBuilder: (context, index) {
               final item = itemList[index];
-
-              // return ListTile(
-              //   title: Text(item.id),
-              //   trailing: IconButton(
-              //     icon: const Icon(Icons.delete),
-              //     onPressed: () {
-              //       context.read<ItemBloc>().deleteItem(item.id);
-              //     },
-              //   ),
-              // );
               return Card(
                 elevation: 4.0,
                 margin:
@@ -50,6 +44,19 @@ class _BlocHomeScreenState extends State<BlocHomeScreen> {
                     'Name: ${item.name}',
                     style: const TextStyle(fontSize: 20),
                   ),
+                  leading: item.avatar.isNotEmpty
+                      ? Image.network(
+                          item.avatar,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/754.jpg',
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
                   trailing: const Icon(Icons.delete),
                   onTap: () {
                     context.read<ItemBloc>().deleteItem(item.id);
@@ -76,9 +83,6 @@ class _BlocHomeScreenState extends State<BlocHomeScreen> {
                         // controller: _textEditingController,
                         scrollPadding: const EdgeInsets.only(top: 20),
                         onChanged: (text) {
-                          // setState(() {
-                          //   _inputText = text;
-                          // });
                           _inputText = text;
                         },
                       ),
@@ -89,10 +93,7 @@ class _BlocHomeScreenState extends State<BlocHomeScreen> {
                       onPressed: () {
                         if (_inputText.isNotEmpty) {
                           print('inside');
-
-                          // context.read<ItemBloc>().addItem('_inputText');
-                          itemBloc.addItem('inputText');
-
+                          itemBloc.addItem(_inputText);
                           Navigator.of(context).pop();
                         }
                       },

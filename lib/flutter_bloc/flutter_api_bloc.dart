@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/flutter_bloc/api_services.dart';
+
+enum ApiStatus { loading, success, error }
 class ItemBloc extends Cubit<List<Item>> {
   final ApiService apiService;
 

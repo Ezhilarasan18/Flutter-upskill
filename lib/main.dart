@@ -28,9 +28,6 @@ import 'package:evaluation_one/flutter_bloc/api_services.dart';
 import 'package:evaluation_one/flutter_bloc/flutter_api_bloc.dart';
 import 'package:evaluation_one/widget/flutter_bloc_home.dart';
 
-
-
-
 void main() {
   runApp(const MyApp());
 }
@@ -40,75 +37,74 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-         final apiService = ApiService();
+    final apiService = ApiService();
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-        ),
-        // home:const Loginscreen()
-        // home:const MyHomePage()
-        // home:const StreamClass()
-        // home:const Stackexample()
-        // home:const Nestedscroll()
-        // home:const NullSafety()
-
-        // MaterialPageRoute example
-        // home:const RouteOne()
-        // home: const CounterPage()
-        // home:const TaskScreen()
-
-        // NamedRoute example
-
-        // initialRoute: '/',
-        // routes: {
-        //   '/': (context) => const NamedRouteOne(),
-        //   '/second': (context) => const NamedRouteTwo(value: 'I am from screen1'),
-        //   '/third': (context) => const NamedRouteThree(),
-        // },
-
-        // onGenereateRoute
-
-        // onGenerateRoute: (settings) {
-        //   if (settings.name == '/screentwo') {
-        //     // to get a value as string
-        //     final dynamicData = settings.arguments as String;
-        //     return MaterialPageRoute(
-        //       builder: (context) => OngenerateRouteTwo(value: dynamicData),
-        //     );
-        //   }
-        //    if (settings.name == '/screenthree') {
-        //     final arrayData=settings.arguments as List;
-        //     return MaterialPageRoute(
-        //       builder: (context) =>  OngenerateRouteThree(value:arrayData),
-        //     );
-        //   }
-        //   return null;
-        // },
-        // home: const OngenerateRouteOne(),
-        // home: const Counter()
-
-        // home:const ProductScreen()
-
-        //   home: ChangeNotifierProvider(
-        //   create: (context) => ProductProvider(),
-        //   child: const ProductListScreen(),
-        // ),
-
-        // home: BlocProvider(
-        //   create: (context) => CounterBloc(),
-        //   child: const Flutterbloccounter(),
-        // ),
-
-        // home: const ApiCallExample(),
-
-        // home:const FlutterBloccrud()
-              home: BlocProvider(
-        create: (context) => ItemBloc(apiService)..fetchItems(),
-        child:const BlocHomeScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
       ),
-        
-        );
+      // home:const Loginscreen()
+      // home:const MyHomePage()
+      // home:const StreamClass()
+      // home:const Stackexample()
+      // home:const Nestedscroll()
+      // home:const NullSafety()
+
+      // MaterialPageRoute example
+      // home:const RouteOne()
+      // home: const CounterPage()
+      // home:const TaskScreen()
+
+      // NamedRoute example
+
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => const NamedRouteOne(),
+      //   '/second': (context) => const NamedRouteTwo(value: 'I am from screen1'),
+      //   '/third': (context) => const NamedRouteThree(),
+      // },
+
+      // onGenereateRoute
+
+      // onGenerateRoute: (settings) {
+      //   if (settings.name == '/screentwo') {
+      //     // to get a value as string
+      //     final dynamicData = settings.arguments as String;
+      //     return MaterialPageRoute(
+      //       builder: (context) => OngenerateRouteTwo(value: dynamicData),
+      //     );
+      //   }
+      //    if (settings.name == '/screenthree') {
+      //     final arrayData=settings.arguments as List;
+      //     return MaterialPageRoute(
+      //       builder: (context) =>  OngenerateRouteThree(value:arrayData),
+      //     );
+      //   }
+      //   return null;
+      // },
+      // home: const OngenerateRouteOne(),
+      // home: const Counter()
+
+      // home:const ProductScreen()
+
+      //   home: ChangeNotifierProvider(
+      //   create: (context) => ProductProvider(),
+      //   child: const ProductListScreen(),
+      // ),
+
+      // home: BlocProvider(
+      //   create: (context) => CounterBloc(),
+      //   child: const Flutterbloccounter(),
+      // ),
+
+      // home: const ApiCallExample(),
+
+      // home:const FlutterBloccrud()
+      home: BlocProvider(
+        create: (context) => ItemBloc(apiService)..fetchItems(),
+        child: const BlocHomeScreen(),
+      ),
+    );
   }
 }
 
