@@ -42,19 +42,19 @@ class ApiService {
   }
   // }
 
-  // Future addItem(dynamic itemId) async {
-  //    final response = await http.post(
-  //     Uri.parse('https://64da15aee947d30a260abe9f.mockapi.io/users'),
-  //     // headers: <String, String>{
-  //     //   'Content-Type': 'application/json',
-  //     // },
-  //     body: (<String, dynamic>{
-  //       'id': '123',
-  //       'Name': 'onetwothree',
-  //     }),
-  //   );
-  //   print(response.body);
-  // }
+  Future addItem(dynamic itemId) async {
+     final response = await http.post(
+      Uri.parse('https://64da15aee947d30a260abe9f.mockapi.io/users'),
+      // headers: <String, String>{
+      //   'Content-Type': 'application/json',
+      // },
+      body: (<String, dynamic>{
+        'id': '123',
+        'Name': 'onetwothree',
+      }),
+    );
+    print(response.body);
+  }
 }
 
 class Item {

@@ -18,12 +18,12 @@ class ItemBloc extends Cubit<List<Item>> {
     emit(updatedItems);
   }
 
-  // Future<void> addItem(String inputText) async {
-  //   print('abcdef$inputText');
-  //   await apiService.addItem(inputText);
-  //   final updatedItems = await apiService.fetchDataFromApi();
-  //   emit(updatedItems);
-  // }
+  Future<void> addItem(String inputText) async {
+    print('abcdef$inputText');
+    await apiService.addItem(inputText);
+    final updatedItems = await apiService.fetchDataFromApi();
+    emit(updatedItems);
+  }
 }
 
 

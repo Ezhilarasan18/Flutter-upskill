@@ -3,23 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/flutter_bloc/flutter_api_bloc.dart';
 import 'package:evaluation_one/flutter_bloc/api_services.dart';
 
-
-class BlocHomeScreen extends StatelessWidget {
+class BlocHomeScreen extends StatefulWidget {
   const BlocHomeScreen({super.key});
 
   @override
+  State<BlocHomeScreen> createState() => _BlocHomeScreenState();
+}
+
+class _BlocHomeScreenState extends State<BlocHomeScreen> {
+
+  @override
   Widget build(BuildContext context) {
-  String _inputText = '';
+    // final CounterBloc counterBloc = BlocProvider.of<CounterBloc>(context);
+    final ItemBloc itemBloc=BlocProvider.of<ItemBloc>(context);
+    String _inputText = '';
     return Scaffold(
       appBar: AppBar(title: const Text('BLoC Example')),
       body: BlocBuilder<ItemBloc, List<Item>>(
         builder: (context, itemList) {
           // print('object${itemList[0]}');
+          // const Text('data');
           return ListView.builder(
             itemCount: itemList.length,
             itemBuilder: (context, index) {
               final item = itemList[index];
-              
+
               // return ListTile(
               //   title: Text(item.id),
               //   trailing: IconButton(
@@ -29,19 +37,25 @@ class BlocHomeScreen extends StatelessWidget {
               //     },
               //   ),
               // );
-               return Card(
-            elevation: 4.0,
-            margin:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: ListTile(
-              title: Text(item.id),
-              subtitle: Text('Subtitle for ${item.name}'),
-              trailing: const Icon(Icons.delete),
-              onTap: () {
-              },
-            ),
-          );
-
-
+              return Card(
+                elevation: 4.0,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: ListTile(
+                  title: Text(
+                    'RollNo:${item.id}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  subtitle: Text(
+                    'Name: ${item.name}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  trailing: const Icon(Icons.delete),
+                  onTap: () {
+                    context.read<ItemBloc>().deleteItem(item.id);
+                  },
+                ),
+              );
             },
           );
         },
@@ -55,7 +69,7 @@ class BlocHomeScreen extends StatelessWidget {
                   builder: (BuildContext context, StateSetter setState) {
                 return AlertDialog(
                   title: const Text('Add Product'),
-                  content:  Column(
+                  content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextField(
@@ -65,11 +79,9 @@ class BlocHomeScreen extends StatelessWidget {
                           // setState(() {
                           //   _inputText = text;
                           // });
-                          _inputText=text;
+                          _inputText = text;
                         },
-                        
                       ),
-                      
                     ],
                   ),
                   actions: [
@@ -77,12 +89,12 @@ class BlocHomeScreen extends StatelessWidget {
                       onPressed: () {
                         if (_inputText.isNotEmpty) {
                           print('inside');
-                          
-                    // context.read<ItemBloc>().addItem(_inputText);
-                  
+
+                          // context.read<ItemBloc>().addItem('_inputText');
+                          itemBloc.addItem('inputText');
+
                           Navigator.of(context).pop();
-                        } 
-                        
+                        }
                       },
                       child: const Text('Add'),
                     ),
