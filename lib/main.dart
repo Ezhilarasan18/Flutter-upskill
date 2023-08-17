@@ -21,12 +21,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:evaluation_one/flutter_bloc/counter_bloc.dart';
-import 'package:evaluation_one/flutter_bloc/flutter_bloc_counter.dart';
+// import 'package:evaluation_one/flutter_bloc/flutter_bloc_counter.dart';
 import 'package:evaluation_one/widget/apiexample.dart';
 import 'package:evaluation_one/widget/flutter_bloc_crud.dart';
 import 'package:evaluation_one/flutter_bloc/api_services.dart';
 import 'package:evaluation_one/flutter_bloc/flutter_api_bloc.dart';
 import 'package:evaluation_one/widget/flutter_bloc_home.dart';
+import 'package:evaluation_one/consumerbloc/consumerblochome.dart';
+import 'package:evaluation_one/consumerbloc/consumer_counterbloc.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -100,10 +103,19 @@ class MyApp extends StatelessWidget {
       // home: const ApiCallExample(),
 
       // home:const FlutterBloccrud()
+
+    // Blocprovider with BlocBuilder
+
       home: BlocProvider(
         create: (context) => ItemBloc(apiService)..fetchItems(),
         child: const BlocHomeScreen(),
       ),
+
+      // home: BlocProvider(
+      //   create: (context) => CounterBloc(),
+      //   child:  Consumerblochome(),
+      // ),
+
     );
   }
 }

@@ -25,12 +25,15 @@ class _BlocHomeScreenState extends State<BlocHomeScreen> {
     String _inputText = '';
     return Scaffold(
       appBar: AppBar(title: const Text('Students Database')),
-      body: BlocBuilder<ItemBloc, List<Item>>(
-        builder: (context, itemList) {
-          return ListView.builder(
-            itemCount: itemList.length,
+      body: BlocBuilder<ItemBloc, ItemState>(
+        builder: (context, state) {
+          if(state is ItemLoadingState){
+            return const Center(child: CircularProgressIndicator());
+          }else if(state is ItemLoadedState){
+            return ListView.builder(
+            itemCount: state.items.length,
             itemBuilder: (context, index) {
-              final item = itemList[index];
+              final item = state.items[index];
               return Card(
                 elevation: 4.0,
                 margin:
@@ -64,7 +67,11 @@ class _BlocHomeScreenState extends State<BlocHomeScreen> {
                 ),
               );
             },
-          );
+            );
+          }else{
+            return const Text('No data available');
+          }
+          
         },
       ),
       floatingActionButton: FloatingActionButton(
