@@ -45,7 +45,7 @@ abstract class ItemState {}
 class ItemLoadingState extends ItemState {}
 
 class ItemLoadedState extends ItemState {
-  final List<Item> items;
+  final List<MyObject> items;
 
   ItemLoadedState(this.items);
 }

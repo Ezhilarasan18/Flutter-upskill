@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^8.1.3
   provider: ^6.0.5
   http: ^1.1.0
+  table_calendar: ^3.0.9
+  syncfusion_flutter_calendar: ^22.2.9
 
 dev_dependencies:
   flutter_test:

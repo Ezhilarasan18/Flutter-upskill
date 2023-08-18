@@ -4,24 +4,34 @@ import 'dart:convert';
 import 'package:evaluation_one/utils/const.dart';
 
 class ApiService {
-  Future<List<Item>> fetchDataFromApi() async {
+  Future<List<MyObject>> fetchDataFromApi() async {
     final response = await http.get(Uri.parse(apiurl));
-    print('api response${response.statusCode}');
+    print('api response${json.decode(response.body)}');
     if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body);
-      final List<Item> items = responseData.map((data) {
-        return Item(id: data['id'], name: data['Name'], avatar: data['avatar']);
-
-      }).toList();
-      return items;
-
-      // print('200');
-
       // final List<dynamic> responseData = json.decode(response.body);
+      // final List<Item> items = responseData.map((data) {
+      //   return Item(id: data['id'], name: data['Name'], avatar: data['avatar']);
+
+      // }).toList();
+      // return items;
+      // print('2000000000');
+
+      // final Map<dynamic, dynamic> responseData = json.decode(response.body);
+      // // var responseData=jsonDecode(response.body);
       // print('finalresult123$responseData');
       // // final result = Dataassign.fromJson(responseData);
-      // // print('finalresult$result');
-      // return [];
+      // List<Dataassign> postList = [];
+      // for (int i = 0; i < responseData.length; i++) {
+      //   Dataassign post =
+      //       Dataassign.fromJson(responseData[i] as Map<String, String>);
+      //   postList.add(post);
+      // }
+
+      final List<dynamic> responseData = json.decode(response.body);
+      final result =
+          responseData.map((json) => MyObject.fromJson(json)).toList();
+      print('finalresult postList$result');
+      return result;
     } else {
       throw Exception('Failed to fetch data');
     }
@@ -55,26 +65,14 @@ class Item {
   Item({required this.id, required this.name, required this.avatar});
 }
 
-class Dataassign {
-  String? name;
-  String? avatar;
-  String? id;
+class MyObject {
+  final String id;
+  final String name;
+  final String avatar;
 
-  Dataassign({this.name, this.avatar, this.id});
+  MyObject({required this.id, required this.name, required this.avatar});
 
-  Dataassign.fromJson(Map<String, dynamic> json) {
-    avatar = json['avatar'];
-    id = json['id'];
-    name = json['Name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-
-    data['name'] = name;
-    data['avatar'] = avatar;
-    data['id'] = id;
-
-    return data;
+  factory MyObject.fromJson(Map<String, dynamic> json) {
+    return MyObject(id: json['id'], name: json['Name'], avatar: json['avatar']);
   }
 }
