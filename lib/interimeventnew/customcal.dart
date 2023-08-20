@@ -34,10 +34,9 @@ class CustomCal extends StatelessWidget {
         body: 
         Column(
           children: [
-            Expanded(
-              child: 
               Container(
-                color: Colors.red,
+                height: 20,
+                color: Colors.blue,
                 child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 7,
@@ -58,8 +57,7 @@ class CustomCal extends StatelessWidget {
                   );
                 },
               ),
-              )
-            ),  
+              ),
             Flexible(
               child: BlocConsumer<CustomEventBloc, CustomState>(
                 bloc: eventBloc,
