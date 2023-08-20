@@ -15,13 +15,7 @@ class _EventScreenState extends State<AddEventScreen> {
   final _nameController = TextEditingController();
   DateTime _selectedTime = DateTime.now();
 
-  @override
-  void initState() {
   
-print('selectedDate${widget.selectedDate}');
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

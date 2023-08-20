@@ -8,7 +8,6 @@ class Flutterbloccounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CounterBloc counterBloc = BlocProvider.of<CounterBloc>(context);
-    print('state${counterBloc.state}');
 
     return Scaffold(
       appBar: AppBar(title: const Text('Flutter Bloc Counter')),

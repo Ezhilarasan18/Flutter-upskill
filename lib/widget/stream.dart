@@ -23,7 +23,6 @@ class _StreamClassState extends State<StreamClass> {
               onPressed: (){
                 Stream stream=controller.stream;
                 stream.listen((value) { 
-                  print('value from controller$value'); 
                 });
               },
               child: const Text('Subscribe'),

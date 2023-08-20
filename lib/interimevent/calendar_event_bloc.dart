@@ -6,15 +6,12 @@ class EventBloc extends Cubit<List<Event>> {
   // void addEvent(DateTime date, Event event) {
 
   void addEvent(Event event) {
-    print('date${event.eventdate}');
-    print('event${event.time}');
-    print('event name${event.name}');
+    
 
     // final Map<DateTime, List<Event>> event;
     List<Event> updatedEvents=[];
 
     updatedEvents.add(event);
-    print('updatedEvents$updatedEvents');
     emit(updatedEvents);
 
     

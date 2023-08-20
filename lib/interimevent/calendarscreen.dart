@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:evaluation_one/interimevent/calendar_event_bloc.dart';
 import 'package:evaluation_one/interimevent/addeventscreen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -14,25 +12,23 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
+  // CalendarFormat _calendarFormat = CalendarFormat.month;
+  // DateTime _selectedDay = DateTime.now();
+  // DateTime _focusedDay = DateTime.now();
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    print('_onDaySelected');
-    // context.read<EventBloc>().addEvent(selectedDay);
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => AddEventScreen(selectedDay)));
-  }
+  // void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  //   Navigator.of(context).push(
+  //       MaterialPageRoute(builder: (context) => AddEventScreen(selectedDay)));
+  // }
 
-  List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
-    // return ['2023-08-09',10:20];
-    return [
-      // Event('Event 1', DateTime(2023, 8, 17, 10, 0)),
-      // Event('Event 2', DateTime(2023, 8, 18, 15, 30)),
-    ];
-  }
+  // List<Event> _getEventsForDay(DateTime day) {
+  //   // Implementation example
+  //   // return ['2023-08-09',10:20];
+  //   return [
+  //     // Event('Event 1', DateTime(2023, 8, 17, 10, 0)),
+  //     // Event('Event 2', DateTime(2023, 8, 18, 15, 30)),
+  //   ];
+  // }
 
   dateConvertor(dat) {
     Navigator.push(
@@ -48,9 +44,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         appBar: AppBar(title: const Text('Calendar Example')),
         body: Center(
           child: BlocBuilder<EventBloc, List<Event>>(builder: (context, state) {
-            print('state${state.isEmpty}');
             displayEvents=state.isEmpty;
-            print('displayEvents$displayEvents');
 
             return Column(
               children: [

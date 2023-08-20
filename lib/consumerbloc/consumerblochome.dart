@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/consumerbloc/consumer_counterbloc.dart';
 
 class Consumerblochome extends StatelessWidget {
-   Consumerblochome({super.key});
-  final CounterBloc _counterBloc = CounterBloc();
+   const Consumerblochome({super.key});
 
   @override
   Widget build(BuildContext context) {

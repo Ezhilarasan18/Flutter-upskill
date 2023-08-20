@@ -2,134 +2,122 @@ import 'package:flutter/material.dart';
 import 'package:evaluation_one/interimeventnew/customaddevent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/interimeventnew/customeventbloc.dart';
+import 'package:evaluation_one/utils/string.dart';
 
 class CustomCal extends StatelessWidget {
   CustomCal({super.key});
-  // List<int> days = List.generate(30, (index) => index + 1);
-
-  // List<List<String>> days = List.generate(30, (index) {
-  //   return [];
-  // });
-
-// days=List.generate
 
   String truncateText(String text) {
     int maxLength = 5;
     if (text.length <= maxLength) {
       return text;
     } else {
-      return text.substring(0, maxLength) + '...';
+      return '${text.substring(0, maxLength)}...';
     }
   }
 
-  final List<String> items = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  timeConvert(dynamic text) {
+    if (text.isNotEmpty) {
+      String timeString = text.toString();
+      String extractedValue = timeString.split('(')[1].split(')')[0];
+      return extractedValue;
+    }
+  }
+
+  
+  final List<String> items=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   @override
   Widget build(BuildContext context) {
     final CustomEventBloc eventBloc = BlocProvider.of<CustomEventBloc>(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Calendar Example')),
-      body: Center(
-        child: BlocConsumer<CustomEventBloc, CustomState>(
-          bloc: eventBloc,
-          listener: (context, state) => {
-            if (state is ItemLoadingState)
-              {print('listener ItemLoadingState$state')}
-            else if (state is ItemLoadedState)
-              {}
-          },
-          listenWhen: (previous, current) {
-            return true;
-          },
-          buildWhen: (previous, current) {
-            return true;
-          },
-          builder: (context, state) {
-            return Center(
-              child: GridView.builder(
+        appBar: AppBar(title: const Text(calendarEvent)),
+        body: 
+        Column(
+          children: [
+            Expanded(
+              child: 
+              Container(
+                color: Colors.red,
+                child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 7,
                 ),
-                itemCount: eventBloc.listData.length,
+                itemCount: items.length,
                 itemBuilder: (context, index) {
-                  return Material(
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Customaddevent(index),
-                              ));
-                        },
-                        child: Card(
-                          child: Column(
-                            children: [
-                              Column(
-                                children: [
-                                  Center(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          (eventBloc.listData[index].eventdate
-                                              .toString()),
-                                        ),
-                                         Text(truncateText
-                                          (eventBloc.listData[index].name),
-                                        ),
-                                        //    Text(
-                                        //   (eventBloc.listData[index].time),
-                                        // ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        )),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          items[index],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
-            );
-          },
+              )
+            ),  
+            Flexible(
+              child: BlocConsumer<CustomEventBloc, CustomState>(
+                bloc: eventBloc,
+                listener: (context, state) => {                  
+                },
+                builder: (context, state) {
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 7,
+                    ),
+                    itemCount: eventBloc.listData.length,
+                    itemBuilder: (context, index) {
+                      return Material(
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Customaddevent(index),
+                                  ));
+                            },
+                            child: Card(
+                              child: Column(
+                                children: [
+                                            Text(
+                                              (eventBloc
+                                                  .listData[index].eventdate
+                                                  .toString()),
+                                            ),
+                                            Text(
+                                              truncateText(eventBloc
+                                                  .listData[index].name),
+                                              style: const TextStyle(
+                                                  color: Colors.blue),
+                                            ),
+                                            if (eventBloc.listData[index].time
+                                                .isNotEmpty)
+                                              Text(
+                                                timeConvert(eventBloc
+                                                    .listData[index].time),
+                                                style: const TextStyle(
+                                                    color: Colors.blue),
+                                              )
+                                ],
+                              ),
+                            )),
+                      );
+                    },
+                  );
+                },
+              ),
+            )
+          ],
         ),
-      ),
-    );
+        );
   }
 
-  List<Widget> _getEventlist(List<Event> list, int index) {
-    print('List<Event>$list');
-    if (list[index].name.isNotEmpty) {
-      List<Widget> eventList = [];
-      eventList.add(Text(list[index].name));
-      eventList.add(Text(list[index].time.toString()));
-      return eventList;
-    }
-    return [];
-  }
 }
 
-// class DayCard extends StatelessWidget {
-//   final int day;
 
-//   DayCard({required this.day});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       child: Center(
-//         child: Text('$day'),
-//       ),
-//     );
-//   }
-// }
-
-// void main() {
-//   List<int> days = List.generate(30, (index) => index + 1);
-
-//   runApp(MaterialApp(
-//     home: Scaffold(
-//       appBar: AppBar(title: Text('30-Day Calendar')),
-//       body: DayCalendar(days: days),
-//     ),
-//   ));
-// }
