@@ -13,7 +13,8 @@ class Customaddevent extends StatefulWidget {
 
 class _EventScreenState extends State<Customaddevent> {
   final _nameController = TextEditingController();
-  DateTime _selectedTime = DateTime.now();
+  // DateTime _selectedTime = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
 
   @override
   void initState() {
@@ -23,6 +24,7 @@ class _EventScreenState extends State<Customaddevent> {
 
   @override
   Widget build(BuildContext context) {
+    // const _selectedTime=DateTime(0001-10-01 00:00:00.000);
     return Scaffold(
       appBar: AppBar(title: const Text('Add Event')),
       body: Column(
@@ -37,12 +39,19 @@ class _EventScreenState extends State<Customaddevent> {
             },
             child: const Text('Select Time'),
           ),
+           Text(
+              'Selected Time: ${_selectedTime.hour}:${_selectedTime.minute.toString().padLeft(2, '0')}',
+              style: const TextStyle(fontSize: 20),
+            ),
           ElevatedButton(
             onPressed: () {
               // final event = Event(_nameController.text, _selectedTime);
               // context.read<EventBloc>().addEvent(widget.selectedDate, event);
-               final event = Event(_nameController.text, _selectedTime,widget.selectedDate);
-              context.read<CustomEventBloc>().addEvent(event);
+              //  final event = Event(_nameController.text,_selectedTime.toString(),widget.selectedDate);
+              // context.read<CustomEventBloc>().addEvent(event);
+
+                final event = Event(_nameController.text,_selectedTime.toString(),widget.selectedDate);
+              context.read<CustomEventBloc>().add(ItemAddingEvent(event,widget.selectedDate));
               Navigator.pop(context);
             },
             child: const Text('Add Event'),
@@ -53,21 +62,32 @@ class _EventScreenState extends State<Customaddevent> {
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    final pickedTime = await showTimePicker(
+    final  pickedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(_selectedTime),
+      initialTime: _selectedTime,
     );
-    if (pickedTime != null) {
+    print('pickedTime$pickedTime');
+     if (pickedTime != null) {
+    print('inside if');
+
       setState(() {
-        _selectedTime = DateTime(
-          // widget.selectedDate.year,
-          // widget.selectedDate.month,
-          // widget.selectedDate.day,
-          pickedTime.hour,
-          // pickedTime.minute,
-        );
-          print('_selectedTime$_selectedTime');
+        _selectedTime = pickedTime;
       });
-    }
+    // if (pickedTime != null) {
+    //   setState(() {
+    //     _selectedTime = DateTime(
+    //       // widget.selectedDate.year,
+    //       // widget.selectedDate.month,
+    //       // widget.selectedDate.day,
+    //       pickedTime.hour,
+    //       pickedTime.minute,
+    //     );
+    //      if (pickedTime != null && pickedTime != _selectedTime) {
+    //   setState(() {
+    //     _selectedTime = pickedTime;
+    //   });
+    //       print('_selectedTime$_selectedTime');
+    //   });
+    // }
   }
-}
+}}

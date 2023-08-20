@@ -40,6 +40,8 @@ dependencies:
   http: ^1.1.0
   table_calendar: ^3.0.9
   syncfusion_flutter_calendar: ^22.2.9
+  flutter_number_picker: ^1.0.0
+  numberpicker: ^2.1.2
 
 dev_dependencies:
   flutter_test:

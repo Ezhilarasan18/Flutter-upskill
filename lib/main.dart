@@ -37,12 +37,11 @@ import 'package:evaluation_one/widget/sfcalendar.dart';
 import 'package:evaluation_one/interimeventnew/customcal.dart';
 import 'package:evaluation_one/interimeventnew/customcalnew.dart';
 import 'package:evaluation_one/interimeventnew/customeventbloc.dart';
-
-
+import 'package:evaluation_one/counterchecking/counting.dart';
+import 'package:evaluation_one/counterchecking/countingbloc.dart';
 
 void main() {
-   
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 // class MyApp extends StatelessWidget {
@@ -58,10 +57,10 @@ void main() {
 //         primarySwatch: Colors.indigo,
 //       ),
 //       // home:  CustomCal(),
-//        home: BlocProvider(
-//         create: (context) => CustomEventBloc(),
-//         child:  CustomCal(),
-//       ),
+//       //  home: BlocProvider(
+//       //   create: (context) => CustomEventBloc(),
+//       //   child:  CustomCal(),
+//       // ),
 //       // home:  MapGridView(),
 //       // home:const Loginscreen()
 //       // home:const MyHomePage()
@@ -120,8 +119,6 @@ void main() {
 //       // home: const ApiCallExample(),
 //       // home: const Calendar(),
 //       // home:  Sfcalendar(),
-      
-
 
 //       // home:const FlutterBloccrud()
 
@@ -132,13 +129,12 @@ void main() {
 //       //   child: const BlocHomeScreen(),
 //       // ),
 
-
-
-
 //       // home: BlocProvider(
 //       //   create: (context) => CounterBloc(),
 //       //   child:  Consumerblochome(),
 //       // ),
+
+      
 //     );
 //   }
 // }
@@ -190,19 +186,37 @@ void main() {
 //   }
 // }
 
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiBlocProvider(
+//       providers: [
+//         BlocProvider<EventBloc>(
+//           create: (context) => EventBloc(),
+//         ),
+//       ],
+//       child: const MaterialApp(
+//         title: 'Calendar and Events Example',
+//         home: CalendarScreen(),
+//       ),
+//     );
+//   }
+// }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<EventBloc>(
-          create: (context) => EventBloc(),
+        BlocProvider<CustomEventBloc>(
+          create: (context) => CustomEventBloc(),
         ),
       ],
-      child: const MaterialApp(
+      child:  MaterialApp(
         title: 'Calendar and Events Example',
-        home: CalendarScreen(),
+        home: CustomCal(),
       ),
     );
   }
@@ -212,17 +226,14 @@ class MyApp extends StatelessWidget {
 //   const MyApp({super.key});
 //   @override
 //   Widget build(BuildContext context) {
-//     return MultiBlocProvider(
-//       providers: [
-//         BlocProvider<CustomEventBloc>(
-//           create: (context) => CustomEventBloc(),
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         theme: ThemeData(
+//           primarySwatch: Colors.indigo,
 //         ),
-//       ],
-//       child:  MaterialApp(
-//         title: 'Calendar and Events Example',
-//         home: CustomCal(),
-//       ),
-//     );
+//         home: BlocProvider(
+//           create: (context) => CountingBloc(),
+//           child: const Counting(),
+//         ));
 //   }
 // }
-

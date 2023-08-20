@@ -7,71 +7,106 @@ class CustomCal extends StatelessWidget {
   CustomCal({super.key});
   // List<int> days = List.generate(30, (index) => index + 1);
 
-  List<List<String>> days = List.generate(30, (index) {
-    return [];
-  });
+  // List<List<String>> days = List.generate(30, (index) {
+  //   return [];
+  // });
 
 // days=List.generate
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text('Calendar Example')),
-        body: Center(child: BlocBuilder<CustomEventBloc, List<Event>>(
-            builder: (context, state) {
-              // print('state${state.first.name}');
-              // print('time${state.first.time}');
-              // print('time${state.first.eventdate}');
-
-
-         return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5, // Number of days per row
-            ),
-            itemCount: days.length,
-            itemBuilder: (context, index) {
-              // return DayCard(day: days[index]);
-              return Material(
-                child: InkWell(
-                    onTap: () {
-                      // Handle onTap event here
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Customaddevent(index),
-                          ));
-                    },
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Center(
-                            child: Text((index + 1).toString(),),
-                          ),
-                          // ..._getEventlist(state,index)
-                          
-                        ],
-                      ),
-                    )),
-              );
-            },
-          );
-        })));
+  String truncateText(String text) {
+    int maxLength = 5;
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.substring(0, maxLength) + '...';
+    }
   }
 
-  List<Widget> _getEventlist(List<Event> list,int index){
-    if(list[index].name.isNotEmpty){
-      List<Widget> eventList=[];
+  final List<String> items = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  @override
+  Widget build(BuildContext context) {
+    final CustomEventBloc eventBloc = BlocProvider.of<CustomEventBloc>(context);
+    return Scaffold(
+      appBar: AppBar(title: const Text('Calendar Example')),
+      body: Center(
+        child: BlocConsumer<CustomEventBloc, CustomState>(
+          bloc: eventBloc,
+          listener: (context, state) => {
+            if (state is ItemLoadingState)
+              {print('listener ItemLoadingState$state')}
+            else if (state is ItemLoadedState)
+              {}
+          },
+          listenWhen: (previous, current) {
+            return true;
+          },
+          buildWhen: (previous, current) {
+            return true;
+          },
+          builder: (context, state) {
+            return Center(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 7,
+                ),
+                itemCount: eventBloc.listData.length,
+                itemBuilder: (context, index) {
+                  return Material(
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Customaddevent(index),
+                              ));
+                        },
+                        child: Card(
+                          child: Column(
+                            children: [
+                              Column(
+                                children: [
+                                  Center(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          (eventBloc.listData[index].eventdate
+                                              .toString()),
+                                        ),
+                                         Text(truncateText
+                                          (eventBloc.listData[index].name),
+                                        ),
+                                        //    Text(
+                                        //   (eventBloc.listData[index].time),
+                                        // ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 
-eventList.add(  Text(list[index].name) );
-eventList.add(  Text(list[index].time.toString()) );
-return eventList;
-
+  List<Widget> _getEventlist(List<Event> list, int index) {
+    print('List<Event>$list');
+    if (list[index].name.isNotEmpty) {
+      List<Widget> eventList = [];
+      eventList.add(Text(list[index].name));
+      eventList.add(Text(list[index].time.toString()));
+      return eventList;
     }
     return [];
   }
 }
-
-
 
 // class DayCard extends StatelessWidget {
 //   final int day;
