@@ -15,48 +15,24 @@ class CustomCal extends StatelessWidget {
       appBar: AppBar(title: const Text(calendarEvent)),
       body: Column(
         children: [
-          // Container(
-          //   height: 20,
-          //   color: Colors.blue,
-          //   child: GridView.builder(
-          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //       crossAxisCount: 7,
-          //     ),
-          //     itemCount: items.length,
-          //     itemBuilder: (context, index) {
-          //       return Column(
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         children: [
-          //           Padding(
-          //             padding: const EdgeInsets.all(5.0),
-          //             child: Text(
-          //               items[index],
-          //               style: const TextStyle(fontWeight: FontWeight.bold),
-          //             ),
-          //           ),
-          //         ],
-          //       );
-          //     },
-          //   ),
-          // ),
           Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              for (String cardText in items)
-                Padding(
-                  padding: const EdgeInsets.only(right: 5.0),
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(cardText),
+            padding: const EdgeInsets.all(1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (String cardText in items)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(cardText),
+                      ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
           Flexible(
             child: BlocBuilder<CustomEventBloc, CustomState>(
               builder: (context, state) {
@@ -79,19 +55,34 @@ class CustomCal extends StatelessWidget {
                           child: Card(
                             child: Column(
                               children: [
-                                if (eventBloc.listData[index].isTrue == true)
-                                  const Icon(
-                                    Icons.star,
-                                    size: 10,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Row(
+                                    children: [
+                                      if (eventBloc.listData[index].isTrue ==
+                                          true)
+                                        Container(
+                                          width: 8,
+                                          height: 8,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      Text(
+                                        (eventBloc.listData[index].eventdate
+                                            .toString()),
+                                      ),
+                                    ],
                                   ),
-                                Text(
-                                  (eventBloc.listData[index].eventdate
-                                      .toString()),
                                 ),
-                                Text(
-                                  eventBloc.listData[index].name,
-                                  style: const TextStyle(color: Colors.blue),
-                                ),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                  child: Text(
+                                    eventBloc.listData[index].name,
+                                    style: const TextStyle(color: Colors.blue),
+                                  ),
+                                )),
                                 if (eventBloc.listData[index].time.isNotEmpty)
                                   Text(
                                     timeConvert(eventBloc.listData[index].time),

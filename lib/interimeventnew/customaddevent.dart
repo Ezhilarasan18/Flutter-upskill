@@ -49,7 +49,6 @@ class _EventScreenState extends State<Customaddevent> {
               TextField(
                 controller: _nameController,
                 keyboardType: TextInputType.text,
-                maxLength: 15,
                 decoration: const InputDecoration(labelText: eventName),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),

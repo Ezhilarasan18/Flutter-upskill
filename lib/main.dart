@@ -11,24 +11,14 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CustomEventBloc>(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: BlocProvider<CustomEventBloc>(
           create: (context) => CustomEventBloc(),
-        ),
-      ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Calendar and Events',
-        home: CustomCal(),
-      ),
+          child: const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: CustomCal(),
+          )),
     );
-    // return MaterialApp(
-    //   home: BlocProvider(create: (context)=>CustomEventBloc(),
-    //   child: const CustomCal(),
-    //   ),
-    // );
   }
 }
-
-
