@@ -59,15 +59,14 @@ class CustomCal extends StatelessWidget {
               ),
               ),
             Flexible(
-              child: BlocConsumer<CustomEventBloc, CustomState>(
-                bloc: eventBloc,
-                listener: (context, state) => {                  
-                },
+              child: BlocBuilder<CustomEventBloc, CustomState>(
                 builder: (context, state) {
                   return GridView.builder(
+                    
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7,
+                      childAspectRatio: 0.5,
                     ),
                     itemCount: eventBloc.listData.length,
                     itemBuilder: (context, index) {
@@ -83,21 +82,23 @@ class CustomCal extends StatelessWidget {
                             child: Card(
                               child: Column(
                                 children: [
+                                  if(eventBloc.listData[index].isTrue==true)
+                                  const Icon(Icons.star,size: 10,),
                                             Text(
                                               (eventBloc
                                                   .listData[index].eventdate
                                                   .toString()),
                                             ),
                                             Text(
-                                              truncateText(eventBloc
-                                                  .listData[index].name),
+                                              eventBloc
+                                                  .listData[index].name,
                                               style: const TextStyle(
                                                   color: Colors.blue),
                                             ),
                                             if (eventBloc.listData[index].time
                                                 .isNotEmpty)
                                               Text(
-                                                timeConvert(eventBloc
+                                             timeConvert(eventBloc
                                                     .listData[index].time),
                                                 style: const TextStyle(
                                                     color: Colors.blue),

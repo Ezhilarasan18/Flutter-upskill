@@ -15,12 +15,8 @@ class Customaddevent extends StatefulWidget {
 class _EventScreenState extends State<Customaddevent> {
   final _nameController = TextEditingController();
   TimeOfDay _selectedTime = TimeOfDay.now();
+  final pickedTime='';
 
-@override
-  void initState() {
-    print('selecteddate${widget.selectedDate}');
-    super.initState();
-  }
   void _showPopup(BuildContext context) {
     showDialog(
       context: context,
@@ -45,7 +41,10 @@ class _EventScreenState extends State<Customaddevent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(addEvent)),
-      body: Column(
+      body: 
+      BlocBuilder<CustomEventBloc, CustomState>(
+        builder: (context, state) {
+         return Column(
         children: [
           TextField(
             controller: _nameController,
@@ -57,9 +56,12 @@ class _EventScreenState extends State<Customaddevent> {
             },
             child: const Text(selectTime),
           ),
+          state is TimeChangeState ?
           Text(
-            'Selected Time: ${_selectedTime.hour}:${_selectedTime.minute.toString().padLeft(2, '0')}',
+            state.selectedTime,
             style: const TextStyle(fontSize: 20),
+          ): Text(
+            'Selected Time: ${DateTime.now().hour}:${DateTime.now().minute}',
           ),
           ElevatedButton(
             onPressed: () {
@@ -67,7 +69,7 @@ class _EventScreenState extends State<Customaddevent> {
                 _showPopup(context);
               } else {
                 final event = Event(_nameController.text,
-                    _selectedTime.toString(), widget.selectedDate+1);
+                    _selectedTime.toString(), widget.selectedDate+1,false);
                 context
                     .read<CustomEventBloc>()
                     .add(ItemAddingEvent(event, widget.selectedDate));
@@ -77,7 +79,10 @@ class _EventScreenState extends State<Customaddevent> {
             child: const Text(addEvent),
           ),
         ],
-      ),
+      );
+        }
+      )
+      
     );
   }
 
@@ -87,9 +92,9 @@ class _EventScreenState extends State<Customaddevent> {
       initialTime: _selectedTime,
     );
     if (pickedTime != null) {
-      setState(() {
-        _selectedTime = pickedTime;
-      });
+     _selectedTime=pickedTime;
+     context.read<CustomEventBloc>().add(TimeAddingEvent(pickedTime));
     }
   }
+  
 }
