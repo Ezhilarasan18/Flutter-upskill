@@ -17,12 +17,17 @@ class MyApp extends StatelessWidget {
           create: (context) => CustomEventBloc(),
         ),
       ],
-      child:  MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Calendar and Events',
         home: CustomCal(),
       ),
     );
+    // return MaterialApp(
+    //   home: BlocProvider(create: (context)=>CustomEventBloc(),
+    //   child: const CustomCal(),
+    //   ),
+    // );
   }
 }
 
