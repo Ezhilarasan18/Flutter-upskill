@@ -14,6 +14,7 @@ const addEvent="Add Event";
 const eventName="Event Name";
 const selectTime="Select Time";
 const calendarEvent='Calendar Event';
+const selectedTime='Selected Time :';
 
 
 

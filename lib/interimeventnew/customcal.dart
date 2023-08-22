@@ -49,7 +49,8 @@ class CustomCal extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Customaddevent(index),
+                                  builder: (context) => Customaddevent(
+                                      index, eventBloc.listData[index].isTrue),
                                 ));
                           },
                           child: Card(
@@ -62,17 +63,27 @@ class CustomCal extends StatelessWidget {
                                       if (eventBloc.listData[index].isTrue ==
                                           true)
                                         Container(
-                                          width: 8,
-                                          height: 8,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.blue,
-                                          ),
+                                            width: 20,
+                                            height: 20,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.blue,
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                (eventBloc
+                                                    .listData[index].eventdate
+                                                    .toString()),
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            )),
+                                      if (eventBloc.listData[index].isTrue ==
+                                          false)
+                                        Text(
+                                          (eventBloc.listData[index].eventdate
+                                              .toString()),
                                         ),
-                                      Text(
-                                        (eventBloc.listData[index].eventdate
-                                            .toString()),
-                                      ),
                                     ],
                                   ),
                                 ),
