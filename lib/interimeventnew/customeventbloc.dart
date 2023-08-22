@@ -14,11 +14,10 @@ class CustomEventBloc extends Bloc<CustomEvent, CustomState> {
     on<TimeAddingEvent>((event, emit) {
       emit(TimeChangeState(parseTime(event.selectedTime)));
     });
-
   }
-    String parseTime(TimeOfDay time) {
-      return '${time.hour}:${time.minute.toString().padLeft(2, '0')}';
-    }
+  String parseTime(TimeOfDay time) {
+    return '${time.hour}:${time.minute.toString().padLeft(2, '0')}';
+  }
 
   List<Event> listData = List.generate(30, (index) {
     final bool randomBool = Random().nextBool();
