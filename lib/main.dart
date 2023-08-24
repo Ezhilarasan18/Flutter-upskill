@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:evaluation_one/widget/routeone.dart';
-import 'package:evaluation_one/widget/namedroutethree.dart';
-import 'package:evaluation_one/widget/namedrouteone.dart';
-import 'package:evaluation_one/widget/namedroutetwo.dart';
-import 'package:evaluation_one/widget/ongeneraterouteone.dart';
-import 'package:evaluation_one/widget/ongenerateroutetwo.dart';
-import 'package:evaluation_one/widget/ongenerateroutethree.dart';
+import 'package:provider/provider.dart';
+import 'package:evaluation_one/provider/productprovider.dart';
+import 'package:evaluation_one/widget/productlistscreen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:evaluation_one/flutter_bloc/api_services.dart';
+import 'package:evaluation_one/widget/flutter_bloc_home.dart';
+import 'package:evaluation_one/flutter_bloc/flutter_api_bloc.dart';
+import 'package:evaluation_one/widget/counter.dart';
+import 'package:evaluation_one/flutter_bloc/flutter_theme_bloc.dart';
+import 'package:evaluation_one/widget/productscreen.dart';
+
 
 void main() {
-  runApp(MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-const MyApp({super.key});
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,22 +24,19 @@ const MyApp({super.key});
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
+      // Provider-Uncommand the below line for provider
+      home: ChangeNotifierProvider(
+        create: (context) => ProductProvider(),
+        child: const ProductListScreen(),
+      ),
 
+      // BLoc pattern-uncommand the below line for bloc pattern
 
-      // MaterialPageRoute example-uncommand  the below line
-
-      // home:const RouteOne()
+      // home:const ProductScreen()
      
-
-      // NamedRoute example -uncommand  the below line
-
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const NamedRouteOne(),
-        '/second': (context) => const NamedRouteTwo(value: 'I am from screen1'),
-        '/third': (context) => const NamedRouteThree(),
-      },  
     );
   }
 }
+
+
 
