@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/flutter_bloc/flutter_api_bloc.dart';
+import 'package:evaluation_one/flutter_bloc/flutter_theme_bloc.dart';
+
 
 
 class BlocHomeScreen extends StatefulWidget {
@@ -11,13 +13,6 @@ class BlocHomeScreen extends StatefulWidget {
 }
 
 class _BlocHomeScreenState extends State<BlocHomeScreen> {
-//   @override
-//   void initState() {
-// final ItemBloc itemBloc;
-//       itemBloc =BlocProvider.of<ItemBloc>(context);
-
-//     super.initState();
-//   }
   @override
   Widget build(BuildContext context) {
     final ItemBloc itemBloc = BlocProvider.of<ItemBloc>(context);
@@ -143,21 +138,21 @@ class _BlocHomeScreenState extends State<BlocHomeScreen> {
         },
         child: const Icon(Icons.add),
       ),
-      //  bottomNavigationBar: BottomAppBar(
-      //   child: BlocConsumer<ThemeBloc, ThemeData>(
-      //     builder: (context, theme) {
-      //       return IconButton(
-      //         onPressed: () {
-      //           context.read<ThemeBloc>().toggleTheme();
-      //         },
-      //         icon: const Icon(Icons.brightness_4), // Dark theme icon
-      //       );
-      //     },
-      //     listener: (context, theme) {
-      //       // Handle any theme changes
-      //     },
-      //   ),
-      // ),
+       bottomNavigationBar: BottomAppBar(
+        child: BlocConsumer<ThemeBloc, ThemeData>(
+          builder: (context, theme) {
+            return IconButton(
+              onPressed: () {
+                context.read<ThemeBloc>().toggleTheme();
+              },
+              icon: const Icon(Icons.brightness_4), // Dark theme icon
+            );
+          },
+          listener: (context, theme) {
+            // Handle any theme changes
+          },
+        ),
+      ),
     );
   }
 }
