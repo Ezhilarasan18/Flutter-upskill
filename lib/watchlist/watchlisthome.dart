@@ -3,10 +3,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/watchlist/tabbarbloc.dart';
 import 'package:evaluation_one/watchlist/symbolscreen.dart';
 
-class DynamicTabBarWidget extends StatelessWidget {
+class DynamicTabBarWidget extends StatefulWidget {
+  const DynamicTabBarWidget({super.key});
+  @override
+  State<DynamicTabBarWidget> createState() => _DynamicTabBarWidgetState();
+}
+
+class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
   String watchlistName = '';
+  bool showErrorDialog = false;
 
-
+  void _showErrorDialog(BuildContext context, String error) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(error),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
@@ -15,11 +40,42 @@ class DynamicTabBarWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Dynamic Tab Bar'),
       ),
-      body: BlocBuilder<TabBarBloc, TabBarState>(
+      body: BlocConsumer <TabBarBloc, TabBarState>(
+        listener: (context, state)  {
+         showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Error'),
+                    content: Text('error'),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+        },
+        listenWhen: (previous, current)  {
+          if(previous is TabBarUpdatedState && current is TabBarErrorState){
+            return true;
+          }
+          return false;
+        },
+        buildWhen: (previous, current)  {
+          if(current is TabBarErrorState){
+            return false;
+          }
+          return true;
+        },
         builder: (context, state) {
           if (state is TabBarInitialState) {
             return const Center(child: Text('No tabs yet.'));
-          } else if (state is TabBarUpdatedState) {
+          }  if (state is TabBarUpdatedState) {
             final tabTitles = state.tabTitles;
             return DefaultTabController(
               length: tabTitles.length,
@@ -36,14 +92,12 @@ class DynamicTabBarWidget extends StatelessWidget {
                 ),
               ),
             );
-          }
-          return Container(); // Handle other states if necessary
+          }  
+          return Container(); 
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // final tabTitle = "New Tab ${tabBarBloc.tabTitles.length + 1}";
-          // tabBarBloc.add(AddTabEvent('abc'));
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -51,7 +105,11 @@ class DynamicTabBarWidget extends StatelessWidget {
                   title: const Text('Enter watchlist group name'),
                   content: TextField(
                     onChanged: (value) => {watchlistName = value},
-                    decoration: const InputDecoration(hintText: 'Enter text'),
+                    decoration:  InputDecoration(
+                      hintText: 'Enter text',
+                      errorText: watchlistName.isEmpty ? '_errorMessage' : null,
+                      ),
+                    
                   ),
                   actions: [
                     TextButton(
@@ -63,16 +121,20 @@ class DynamicTabBarWidget extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Handle the input value here
+                        if(watchlistName.isNotEmpty){
+
                         tabBarBloc.add(AddTabEvent(watchlistName));
                         Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SymbolScreen()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const SymbolScreen()),
+                        // );
+                        }else{
+                          
+                        }
                       },
-                      child:const Text('Submit'),
+                      child: const Text('Submit'),
                     ),
                   ],
                 );
@@ -80,6 +142,27 @@ class DynamicTabBarWidget extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class FailureWidget extends StatelessWidget {
+  const FailureWidget({super.key, required this.error});
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Failure: $error'),
+        ElevatedButton(
+          onPressed: () {
+            // Retry or navigate to another screen, etc.
+            Navigator.pop(context);
+          },
+          child: Text('Retry'),
+        ),
+      ],
     );
   }
 }

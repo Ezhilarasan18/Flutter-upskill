@@ -7,9 +7,20 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
 
   TabBarBloc() : super(TabBarInitialState()) {
     on<AddTabEvent>((event, emit) {
-      tabTitles.add(event.tabTitle);
-      emit(TabBarUpdatedState(List.from(tabTitles)));
-      // emit(TabBarUpdatedState(tabTitles));
+      bool nameExists = tabTitles.any((item) => item == event.tabTitle);
+      print('nameExists$nameExists');
+      if (nameExists) {
+        print('inside if');
+        emit(TabBarErrorState('error'));
+      }
+      // print('outside if');
+      
+      else {
+        print('inside else');
+        tabTitles.add(event.tabTitle);
+        emit(TabBarUpdatedState(List.from(tabTitles)));
+        // emit(TabBarUpdatedState(tabTitles));
+      }
     });
 
     on<ApiInitialEvent>((event, emit) async {
@@ -47,10 +58,8 @@ Future<List<Apidata>> fetchData() async {
     print('Data fetched: ${response.body}');
     final List<dynamic> responseData = json.decode(response.body);
     final result = responseData.map((json) => Apidata.fromJson(json)).toList();
-    print('result$result');
     return result;
   } catch (e) {
-    print('Error: $e');
     return [];
   }
 }
@@ -87,6 +96,12 @@ class TabBarUpdatedState extends TabBarState {
   TabBarUpdatedState(this.tabTitles);
 }
 
+class TabBarErrorState extends TabBarState {
+  final String error;
+
+  TabBarErrorState(this.error);
+}
+
 class Apidata {
   final String id;
   final String name;
@@ -105,4 +120,10 @@ class Apidata {
         contacts: json['Contacts'],
         img: json['url']);
   }
+}
+
+class WatchlistNameAddEvent extends TabBarEvent{
+  final String watchlistName;
+  WatchlistNameAddEvent(this.watchlistName);
+
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/watchlist/tabbarbloc.dart';
+// import 'package:evaluation_one/watchlist/apibloc.dart';
 
 class SymbolScreen extends StatefulWidget {
   const SymbolScreen({super.key});
@@ -12,9 +13,11 @@ class SymbolScreen extends StatefulWidget {
 class _SymbolScreenState extends State<SymbolScreen> {
   @override
   void initState() {
-    final apiBloc = BlocProvider.of<TabBarBloc>(context);
-    // tabBarBloc.add(ApiInitialEvent());
-    apiBloc.add(ApiInitialEvent());
+    // final apiBloc = BlocProvider.of<ApiBloc>(context);
+    // apiBloc.add(ApiInitialEvent());
+    final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
+
+    tabBarBloc.add(ApiInitialEvent());
     super.initState();
   }
 
