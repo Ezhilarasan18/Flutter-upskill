@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ApiBloc extends Bloc<ApiEvent, ApiState> {
-  List<Apidata> items=[];
+  List<Apidata> items = [];
   ApiBloc() : super(ApiInitialState()) {
     on<ApiInitialEvent>((event, emit) async {
       emit(ApiInitialState());

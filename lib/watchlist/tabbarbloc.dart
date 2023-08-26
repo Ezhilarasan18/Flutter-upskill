@@ -29,6 +29,8 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
       print('items$items');
       emit(ApiLoadedState(items));
     });
+    
+    
   }
 }
 
@@ -126,4 +128,9 @@ class WatchlistNameAddEvent extends TabBarEvent{
   final String watchlistName;
   WatchlistNameAddEvent(this.watchlistName);
 
+}
+
+class WatchlistNameAddedState extends TabBarState{
+  final String watchlistName;
+  WatchlistNameAddedState(this.watchlistName);
 }

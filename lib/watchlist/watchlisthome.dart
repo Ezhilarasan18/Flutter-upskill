@@ -122,16 +122,16 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
                     TextButton(
                       onPressed: () {
                         if(watchlistName.isNotEmpty){
-
+                          print('ifffffff');
                         tabBarBloc.add(AddTabEvent(watchlistName));
                         Navigator.of(context).pop();
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const SymbolScreen()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SymbolScreen()),
+                        );
                         }else{
-                          
+                          print('elseeeee');
                         }
                       },
                       child: const Text('Submit'),
