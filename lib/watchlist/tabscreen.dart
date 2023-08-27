@@ -1,5 +1,5 @@
-import 'package:evaluation_one/watchlist/tabbarbloc.dart';
-// import 'package:evaluation_one/watchlist/apibloc.dart';
+// import 'package:evaluation_one/watchlist/tabbarbloc.dart';
+import 'package:evaluation_one/watchlist/apibloc.dart';
 import 'package:flutter/material.dart';
 import 'package:evaluation_one/watchlist/firsttabscreen.dart';
 import 'package:evaluation_one/watchlist/secondtabscreen.dart';
@@ -10,6 +10,14 @@ class MyTabScreen extends StatelessWidget {
   final List<Apidata> allItems; // The received list data
 
   MyTabScreen(this.allItems);
+  
+   List<Apidata> duplicateData = [
+    Apidata(id: '1', name: 'John', contacts: '123456', img: 'image1.jpg'),
+    Apidata(id: '2', name: 'Jane', contacts: '789012', img: 'image2.jpg'),
+    Apidata(id: '3', name: 'Alice', contacts: '345678', img: 'image3.jpg'),
+    Apidata(id: '4', name: 'Bob', contacts: '901234', img: 'image4.jpg'),
+    // Add more duplicates as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +27,17 @@ class MyTabScreen extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tabbed List Display'),
-          bottom: TabBar(
+          title: const Text('Symbols'),
+          bottom: const TabBar(
             tabs: [
-              Tab(text: 'Tab 1'),
-              Tab(text: 'Tab 2'),
-              Tab(text: 'Tab 3'),
-              Tab(text: 'Tab 4'),
+              Tab(text: 'Contact 1'),
+              Tab(text: 'Contact 2'),
+              Tab(text: 'Contact 3'),
+              Tab(text: 'Contact 4'),
             ],
           ),
         ),
-        body: Expanded(
-          child: 
+        body: 
         TabBarView(
           children: [
             FirstTabScreen(splitItems[0]),
@@ -39,7 +46,6 @@ class MyTabScreen extends StatelessWidget {
             FourthTabScreen(splitItems[3]),
           ],
         ),
-          )
       ),
     );
   }
@@ -52,7 +58,9 @@ List<List<T>> splitList<T>(List<T> list, int parts) {
     (index) {
       int start = index * chunkSize;
       int end = (index + 1) * chunkSize;
-      return list.sublist(start, end < list.length ? end : list.length);
+      final temp=list.sublist(start, end < list.length ? end : list.length);
+      print('temp${temp.length}');
+      return temp;
     },
   );
 }

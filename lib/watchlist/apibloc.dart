@@ -36,6 +36,7 @@ Future<List<Apidata>> fetchData() async {
     final result = responseData.map((json) => Apidata.fromJson(json)).toList();
     return result;
   } catch (e) {
+    print('cache');
     return [];
   }
 }
