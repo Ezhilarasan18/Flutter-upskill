@@ -58,7 +58,7 @@ List<List<T>> splitList<T>(List<T> list, int parts) {
       int start = index * chunkSize;
       int end = (index + 1) * chunkSize;
       final temp=list.sublist(start, end < list.length ? end : list.length);
-      print('temp${temp.length}');
+      print('temp${temp[index]}');
       return temp;
     },
   );

@@ -9,7 +9,8 @@ class DynamicTabBarWidget extends StatefulWidget {
   State<DynamicTabBarWidget> createState() => _DynamicTabBarWidgetState();
 }
 
-class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTickerProviderStateMixin{
+class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
+    with SingleTickerProviderStateMixin {
   String watchlistName = '';
   bool showErrorDialog = false;
 
@@ -32,12 +33,13 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTi
       },
     );
   }
+
   late TabBarBloc tabBarBloc;
   late TabController tabController;
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
-        final List<String> tabTitles = [];
+    final List<String> tabTitles = [];
     for (var key in tabBarBloc.tabTitles) {
       tabTitles.add(key);
     }
@@ -46,25 +48,25 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTi
       appBar: AppBar(
         title: const Text('Dynamic Tab Bar'),
       ),
-      body: BlocConsumer <TabBarBloc, TabBarState>(
-        listener: (context, state)  {
-        //  showDialog(
-        //         context: context,
-        //         builder: (BuildContext context) {
-        //           return AlertDialog(
-        //             title: Text('Error'),
-        //             content: Text('error'),
-        //             actions: [
-        //               TextButton(
-        //                 onPressed: () async {
-        //                   Navigator.pop(context);
-        //                 },
-        //                 child: Text('OK'),
-        //               ),
-        //             ],
-        //           );
-        //         },
-        //       );
+      body: BlocConsumer<TabBarBloc, TabBarState>(
+        listener: (context, state) {
+          //  showDialog(
+          //         context: context,
+          //         builder: (BuildContext context) {
+          //           return AlertDialog(
+          //             title: Text('Error'),
+          //             content: Text('error'),
+          //             actions: [
+          //               TextButton(
+          //                 onPressed: () async {
+          //                   Navigator.pop(context);
+          //                 },
+          //                 child: Text('OK'),
+          //               ),
+          //             ],
+          //           );
+          //         },
+          //       );
         },
         // listenWhen: (previous, current)  {
         //   if(previous is TabBarUpdatedState && current is TabBarErrorState){
@@ -81,56 +83,56 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTi
         builder: (context, state) {
           if (state is AddselectedsymbolscreateGroupInitialstate) {
             return const Center(child: Text('No tabs yet.'));
-          }  if (state is AddselectedsymbolscreateGroupSuccessstate) {
+          }
+          if (state is AddselectedsymbolscreateGroupSuccessstate) {
             final tabTitles = state.items;
             print('state.items${state.items}');
             return DefaultTabController(
-              length: tabTitles.length,
-              child: Scaffold(
-                appBar: AppBar(
-                  bottom:TabBar(
-                    tabs: [Tab(text:state.items['groupname'])])
-                  // bottom: TabBar(
-                  //   tabs: tabTitles.entries.map((title) => Tab(text: title.value)).toList(),
-                  // ),
-          //          bottom: TabBar(
-          //           controller: tabController,
-          //           // tabs: tabTitles[0],
-          //                     tabs: state.items[0]['symbols'].map<Widget>((symbol) {
-          //   Tab(
-          //     text: state.items[0]['groupname'], // Use the groupname as tab title
-          //   );
-          // }).toList(),
-          // //         ),
-          //       ),
+                length: tabTitles.length,
+                child: Scaffold(
+                  appBar: AppBar(
+                      bottom:
+                          TabBar(tabs: [Tab(text: state.items['groupname'])])
+                      // bottom: TabBar(
+                      //   tabs: tabTitles.entries.map((title) => Tab(text: title.value)).toList(),
+                      // ),
+                      //          bottom: TabBar(
+                      //           controller: tabController,
+                      //           // tabs: tabTitles[0],
+                      //                     tabs: state.items[0]['symbols'].map<Widget>((symbol) {
+                      //   Tab(
+                      //     text: state.items[0]['groupname'], // Use the groupname as tab title
+                      //   );
+                      // }).toList(),
+                      // //         ),
+                      //       ),
 
-                
-                // body: TabBarView(
-                //   children: [Text(tabTitles[0])]
-                // ),
+                      // body: TabBarView(
+                      //   children: [Text(tabTitles[0])]
+                      // ),
 
-                //                 body: TabBarView(controller: tabController, children: [
-                //   ...generateTabView(tabTitles[tabController.index])
-                // ]),
-              ),
-                      body: TabBarView(
-          children: [
-            ListView.builder(
-              itemCount: state.items['symbols'].length,
-              itemBuilder: (context, index) {
-                Apidata symbol = state.items['symbols'][index] as Apidata;
-                return ListTile(
-                  title: Text(symbol.name),
-                  subtitle: Text(symbol.contacts),
-                );
-              },
-            ),
-          ],
-        ),
-            )
-            );
-          }  
-          return Container(); 
+                      //                 body: TabBarView(controller: tabController, children: [
+                      //   ...generateTabView(tabTitles[tabController.index])
+                      // ]),
+                      ),
+                  body: TabBarView(
+                    children: [
+                      ListView.builder(
+                        itemCount: state.items['symbols'].length,
+                        itemBuilder: (context, index) {
+                          Apidata symbol =
+                              state.items['symbols'][index] as Apidata;
+                          return ListTile(
+                            title: Text(symbol.name),
+                            subtitle: Text(symbol.contacts),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ));
+          }
+          return Container();
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -144,8 +146,7 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTi
                     onChanged: (value) => {watchlistName = value},
                     decoration: const InputDecoration(
                       hintText: 'Enter text',
-                      ),
-                    
+                    ),
                   ),
                   actions: [
                     TextButton(
@@ -157,16 +158,18 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTi
                     ),
                     TextButton(
                       onPressed: () {
-                        if(watchlistName.isNotEmpty){
+                        if (watchlistName.isNotEmpty) {
                           print('ifffffff');
-                        // tabBarBloc.add(AddTabEvent(watchlistName));
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>  SymbolScreen(watchlistName: watchlistName,)),
-                        );
-                        }else{
+                          // tabBarBloc.add(AddTabEvent(watchlistName));
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SymbolScreen(
+                                      watchlistName: watchlistName,
+                                    )),
+                          );
+                        } else {
                           print('elseeeee');
                         }
                       },
@@ -180,7 +183,8 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTi
       ),
     );
   }
-    List<Widget> generateTabView(String title) {
+
+  List<Widget> generateTabView(String title) {
     return [];
   }
 }
