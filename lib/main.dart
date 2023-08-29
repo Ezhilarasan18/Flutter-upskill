@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:evaluation_one/watchlist/watchlisthome.dart';
 import 'package:evaluation_one/watchlist/tabbarbloc.dart';
 import 'package:evaluation_one/watchlist/apibloc.dart';
+// import 'package:evaluation_one/widget/tab.dart';
 
 
 
@@ -14,6 +15,10 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+
+    // return MaterialApp(
+    //   home: DynamicTabBarWidget(),
+    // );
   //  return  MultiBlocProvider(
   //     providers: [
   //       BlocProvider<TabBarBloc>(

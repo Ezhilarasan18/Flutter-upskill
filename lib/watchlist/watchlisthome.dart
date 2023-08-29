@@ -9,7 +9,7 @@ class DynamicTabBarWidget extends StatefulWidget {
   State<DynamicTabBarWidget> createState() => _DynamicTabBarWidgetState();
 }
 
-class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
+class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> with SingleTickerProviderStateMixin{
   String watchlistName = '';
   bool showErrorDialog = false;
 
@@ -32,9 +32,16 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
       },
     );
   }
+  late TabBarBloc tabBarBloc;
+  late TabController tabController;
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
+        final List<String> tabTitles = [];
+    for (var key in tabBarBloc.tabTitles) {
+      tabTitles.add(key);
+    }
+    tabController = TabController(length: tabTitles.length, vsync: this);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dynamic Tab Bar'),
@@ -81,14 +88,46 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
               length: tabTitles.length,
               child: Scaffold(
                 appBar: AppBar(
-                  bottom: TabBar(
-                    tabs: tabTitles.entries.map((title) => Tab(text: 'title')).toList(),
-                  ),
-                ),
+                  bottom:TabBar(
+                    tabs: [Tab(text:state.items['groupname'])])
+                  // bottom: TabBar(
+                  //   tabs: tabTitles.entries.map((title) => Tab(text: title.value)).toList(),
+                  // ),
+          //          bottom: TabBar(
+          //           controller: tabController,
+          //           // tabs: tabTitles[0],
+          //                     tabs: state.items[0]['symbols'].map<Widget>((symbol) {
+          //   Tab(
+          //     text: state.items[0]['groupname'], // Use the groupname as tab title
+          //   );
+          // }).toList(),
+          // //         ),
+          //       ),
+
+                
                 // body: TabBarView(
                 //   children: [Text(tabTitles[0])]
                 // ),
+
+                //                 body: TabBarView(controller: tabController, children: [
+                //   ...generateTabView(tabTitles[tabController.index])
+                // ]),
               ),
+                      body: TabBarView(
+          children: [
+            ListView.builder(
+              itemCount: state.items['symbols'].length,
+              itemBuilder: (context, index) {
+                Apidata symbol = state.items['symbols'][index] as Apidata;
+                return ListTile(
+                  title: Text(symbol.name),
+                  subtitle: Text(symbol.contacts),
+                );
+              },
+            ),
+          ],
+        ),
+            )
             );
           }  
           return Container(); 
@@ -140,6 +179,9 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+    List<Widget> generateTabView(String title) {
+    return [];
   }
 }
 
