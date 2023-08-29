@@ -5,61 +5,75 @@ import 'dart:convert';
 class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
   List<String> tabTitles = [];
 
+    List<Apidata> symbolsList = [];
   TabBarBloc() : super(TabBarInitialState()) {
-    on<AddTabEvent>((event, emit) {
-      bool nameExists = tabTitles.any((item) => item == event.tabTitle);
-      print('nameExists$nameExists');
-      if (nameExists) {
-        print('inside if');
-        emit(TabBarErrorState('error'));
-      }
-      // print('outside if');
-      
-      else {
-        print('inside else');
-        tabTitles.add(event.tabTitle);
-        emit(TabBarUpdatedState(List.from(tabTitles)));
-        // emit(TabBarUpdatedState(tabTitles));
-      }
-    });
+    List<Apidata> _selectedsymbols = [];
+    // on<AddTabEvent>((event, emit) {
+    //   bool nameExists = tabTitles.any((item) => item == event.tabTitle);
+    //   print('nameExists$nameExists');
+    //   if (nameExists) {
+    //     print('inside if');
+    //     emit(TabBarErrorState('error'));
+    //   }
+    //   // print('outside if');
+
+    //   else {
+    //     print('inside else');
+    //     tabTitles.add(event.tabTitle);
+    //     emit(TabBarUpdatedState(List.from(tabTitles)));
+    //     // emit(TabBarUpdatedState(tabTitles));
+    //   }
+    // });
 
     on<ApiInitialEvent>((event, emit) async {
       emit(ApiInitialState());
       final List<Apidata> items = await fetchData();
       print('items$items');
+      symbolsList = items;
       emit(ApiLoadedState(items));
     });
-    
-    
+
+    on<ItemSelectEvent>((event, emit) async {
+      print('event.items${event.items}');
+      final updatedSymbol = symbolsList;
+      updatedSymbol[event.index] = Apidata(
+          id: event.items.id,
+          name: event.items.name,
+          contacts: event.items.contacts,
+          img: event.items.img,
+          isSelected: !event.items.isSelected);
+      emit(ApiLoadedState(updatedSymbol));
+      List<Apidata> selectedItems =
+          updatedSymbol.where((item) => item.isSelected).toList();
+      _selectedsymbols = selectedItems;
+      print('_selectedsymbols$_selectedsymbols');
+    });
+
+    on<AddselectedsymbolscreateGroupEvent>((event, emit) async {
+      print('evemt${event.groupname}');
+      Map<String,dynamic> groupData={
+        'groupname':event.groupname,
+        'symbols':_selectedsymbols
+      };
+      print('groupData$groupData');
+      emit(AddselectedsymbolscreateGroupSuccessstate(groupData));
+    });
   }
 }
-
-// class ApiBloc extends Bloc<TabBarEvent, TabBarState> {
-//   // final  repository;
-
-//   ApiBloc() : super(ApiInitialState());
-
-//   // @override
-//   Stream<TabBarState> mapEventToState(TabBarEvent event) async* {
-//     if (event is ApiInitialEvent) {
-//       yield ApiInitialState();
-//       try {
-//         final List<Apidata> data = await fetchData();
-//         yield ApiLoadedState(data);
-//       } catch (e) {
-//         // yield MyErrorState('Error fetching data');
-//       }
-//     }
-//   }
-// }
 
 Future<List<Apidata>> fetchData() async {
   try {
     final response = await http.get(Uri.parse(
         'http://5e53a76a31b9970014cf7c8c.mockapi.io/msf/getContacts'));
     print('Data fetched: ${response.body}');
-    final List<dynamic> responseData = json.decode(response.body);
-    final result = responseData.map((json) => Apidata.fromJson(json)).toList();
+    List<Map<String, dynamic>> parsedResponse =
+        jsonDecode(response.body).cast<Map<String, dynamic>>();
+    for (var item in parsedResponse) {
+      item['isSelected'] = false;
+    }
+    print('parsedResponse$parsedResponse');
+    final result =
+        parsedResponse.map((json) => Apidata.fromJson(json)).toList();
     return result;
   } catch (e) {
     return [];
@@ -92,6 +106,24 @@ class ApiErrorState extends TabBarState {
   ApiErrorState(this.error);
 }
 
+class ItemSelectEvent extends TabBarEvent {
+  final Apidata items;
+  final int index;
+  ItemSelectEvent(this.items, this.index);
+}
+
+class AddselectedsymbolscreateGroupEvent extends TabBarEvent {
+  final String groupname;
+  AddselectedsymbolscreateGroupEvent(this.groupname);
+}
+
+class AddselectedsymbolscreateGroupSuccessstate extends TabBarState {
+  final Map<String,dynamic> items;
+  AddselectedsymbolscreateGroupSuccessstate(this.items);
+}
+
+class AddselectedsymbolscreateGroupInitialstate extends TabBarState {}
+
 class TabBarUpdatedState extends TabBarState {
   final List<String> tabTitles;
 
@@ -109,28 +141,30 @@ class Apidata {
   final String name;
   final String contacts;
   final String img;
+  late final bool isSelected;
 
   Apidata(
       {required this.id,
       required this.name,
       required this.contacts,
-      required this.img});
+      required this.img,
+      required this.isSelected});
   factory Apidata.fromJson(Map<String, dynamic> json) {
     return Apidata(
         id: json['id'],
         name: json['name'],
         contacts: json['Contacts'],
-        img: json['url']);
+        img: json['url'],
+        isSelected: json['isSelected']);
   }
 }
 
-class WatchlistNameAddEvent extends TabBarEvent{
+class WatchlistNameAddEvent extends TabBarEvent {
   final String watchlistName;
   WatchlistNameAddEvent(this.watchlistName);
-
 }
 
-class WatchlistNameAddedState extends TabBarState{
+class WatchlistNameAddedState extends TabBarState {
   final String watchlistName;
   WatchlistNameAddedState(this.watchlistName);
 }

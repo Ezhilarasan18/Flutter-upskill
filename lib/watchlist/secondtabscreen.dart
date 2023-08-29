@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:evaluation_one/watchlist/tabbarbloc.dart';
-import 'package:evaluation_one/watchlist/apibloc.dart';
+import 'package:evaluation_one/watchlist/tabbarbloc.dart';
+// import 'package:evaluation_one/watchlist/apibloc.dart';
 class SecondTabScreen extends StatelessWidget {
 
 

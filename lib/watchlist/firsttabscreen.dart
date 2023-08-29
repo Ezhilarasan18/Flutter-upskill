@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:evaluation_one/watchlist/tabbarbloc.dart';
-import 'package:evaluation_one/watchlist/apibloc.dart';
+import 'package:evaluation_one/watchlist/tabbarbloc.dart';
+// import 'package:evaluation_one/watchlist/apibloc.dart';
 import 'package:flutter/rendering.dart';
 
 class FirstTabScreen extends StatelessWidget {
@@ -32,13 +32,26 @@ class FirstTabScreen extends StatelessWidget {
                     onTap: () {},
                     child: Card(
                       elevation: 4,
-                      child: ListTile(
-                          title: Text(items[index].name),
-                          subtitle: Text(items[index].contacts),
-                          trailing: ClipRRect(
-                            borderRadius: BorderRadius.circular(30.0),
-                            child: Image.asset('lib/assets/images/person.jpg'),
-                          )),
+                      child:
+                          // ListTile(
+                          //   title: Text(items[index].name),
+                          //   subtitle: Text(items[index].contacts),
+                          //   trailing: ClipRRect(
+                          //     borderRadius: BorderRadius.circular(30.0),
+                          //     child: Image.asset('lib/assets/images/person.jpg'),
+                          //   ),
+                          // ),
+                          CheckboxListTile(
+          
+                        title:Text(items[index].name),
+                        subtitle:Text(items[index].contacts),
+                        value: items[index].isSelected,
+                        onChanged: (newValue) {
+                            items[index].isSelected = items[index].isSelected!;
+                        },
+                        controlAffinity: ListTileControlAffinity
+                            .trailing, // Checkbox on the left side of the title
+                      ),
                     ),
                   ),
                 );

@@ -1,5 +1,5 @@
-// import 'package:evaluation_one/watchlist/tabbarbloc.dart';
-import 'package:evaluation_one/watchlist/apibloc.dart';
+import 'package:evaluation_one/watchlist/tabbarbloc.dart';
+// import 'package:evaluation_one/watchlist/apibloc.dart';
 import 'package:flutter/material.dart';
 import 'package:evaluation_one/watchlist/firsttabscreen.dart';
 import 'package:evaluation_one/watchlist/secondtabscreen.dart';
@@ -11,13 +11,12 @@ class MyTabScreen extends StatelessWidget {
 
   MyTabScreen(this.allItems);
   
-   List<Apidata> duplicateData = [
-    Apidata(id: '1', name: 'John', contacts: '123456', img: 'image1.jpg'),
-    Apidata(id: '2', name: 'Jane', contacts: '789012', img: 'image2.jpg'),
-    Apidata(id: '3', name: 'Alice', contacts: '345678', img: 'image3.jpg'),
-    Apidata(id: '4', name: 'Bob', contacts: '901234', img: 'image4.jpg'),
-    // Add more duplicates as needed
-  ];
+  //  List<Apidata> duplicateData = [
+  //   Apidata(id: '1', name: 'John', contacts: '123456', img: 'image1.jpg',isSelected: true),
+  //   Apidata(id: '2', name: 'Jane', contacts: '789012', img: 'image2.jpg',isSelected: false),
+  //   Apidata(id: '3', name: 'Alice', contacts: '345678', img: 'image3.jpg',isSelected: false),
+  //   Apidata(id: '4', name: 'Bob', contacts: '901234', img: 'image4.jpg',isSelected: true),
+  // ];
 
   @override
   Widget build(BuildContext context) {

@@ -35,61 +35,59 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dynamic Tab Bar'),
       ),
       body: BlocConsumer <TabBarBloc, TabBarState>(
         listener: (context, state)  {
-         showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Error'),
-                    content: Text('error'),
-                    actions: [
-                      TextButton(
-                        onPressed: () async {
-                          Navigator.pop(context);
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  );
-                },
-              );
+        //  showDialog(
+        //         context: context,
+        //         builder: (BuildContext context) {
+        //           return AlertDialog(
+        //             title: Text('Error'),
+        //             content: Text('error'),
+        //             actions: [
+        //               TextButton(
+        //                 onPressed: () async {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 child: Text('OK'),
+        //               ),
+        //             ],
+        //           );
+        //         },
+        //       );
         },
-        listenWhen: (previous, current)  {
-          if(previous is TabBarUpdatedState && current is TabBarErrorState){
-            return true;
-          }
-          return false;
-        },
-        buildWhen: (previous, current)  {
-          if(current is TabBarErrorState){
-            return false;
-          }
-          return true;
-        },
+        // listenWhen: (previous, current)  {
+        //   if(previous is TabBarUpdatedState && current is TabBarErrorState){
+        //     return true;
+        //   }
+        //   return false;
+        // },
+        // buildWhen: (previous, current)  {
+        //   if(current is TabBarErrorState){
+        //     return false;
+        //   }
+        //   return true;
+        // },
         builder: (context, state) {
-          if (state is TabBarInitialState) {
+          if (state is AddselectedsymbolscreateGroupInitialstate) {
             return const Center(child: Text('No tabs yet.'));
-          }  if (state is TabBarUpdatedState) {
-            final tabTitles = state.tabTitles;
+          }  if (state is AddselectedsymbolscreateGroupSuccessstate) {
+            final tabTitles = state.items;
+            print('state.items${state.items}');
             return DefaultTabController(
               length: tabTitles.length,
               child: Scaffold(
                 appBar: AppBar(
                   bottom: TabBar(
-                    tabs: tabTitles.map((title) => Tab(text: title)).toList(),
+                    tabs: tabTitles.entries.map((title) => Tab(text: 'title')).toList(),
                   ),
                 ),
-                body: TabBarView(
-                  children: tabTitles.map((title) {
-                    return Center(child: Text('Content of $title tab.'));
-                  }).toList(),
-                ),
+                // body: TabBarView(
+                //   children: [Text(tabTitles[0])]
+                // ),
               ),
             );
           }  
@@ -105,9 +103,8 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
                   title: const Text('Enter watchlist group name'),
                   content: TextField(
                     onChanged: (value) => {watchlistName = value},
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Enter text',
-                      errorText: watchlistName.isEmpty ? '_errorMessage' : null,
                       ),
                     
                   ),
@@ -123,12 +120,12 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget> {
                       onPressed: () {
                         if(watchlistName.isNotEmpty){
                           print('ifffffff');
-                        tabBarBloc.add(AddTabEvent(watchlistName));
+                        // tabBarBloc.add(AddTabEvent(watchlistName));
                         Navigator.of(context).pop();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SymbolScreen()),
+                              builder: (context) =>  SymbolScreen(watchlistName: watchlistName,)),
                         );
                         }else{
                           print('elseeeee');
