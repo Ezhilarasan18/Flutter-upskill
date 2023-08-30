@@ -13,6 +13,7 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
     with SingleTickerProviderStateMixin {
   String watchlistName = '';
   bool showErrorDialog = false;
+   List<GroupData> existingGroup=[];
 
   void _showErrorDialog(BuildContext context, String error) {
     showDialog(
@@ -86,49 +87,60 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
           }
           if (state is AddselectedsymbolscreateGroupSuccessstate) {
             final tabTitles = state.items;
+            existingGroup=state.items;
             print('state.items${state.items}');
             return DefaultTabController(
                 length: tabTitles.length,
                 child: Scaffold(
                   appBar: AppBar(
-                      bottom:
-                          TabBar(tabs: [Tab(text: state.items['groupname'])])
-                      // bottom: TabBar(
-                      //   tabs: tabTitles.entries.map((title) => Tab(text: title.value)).toList(),
-                      // ),
-                      //          bottom: TabBar(
-                      //           controller: tabController,
-                      //           // tabs: tabTitles[0],
-                      //                     tabs: state.items[0]['symbols'].map<Widget>((symbol) {
-                      //   Tab(
-                      //     text: state.items[0]['groupname'], // Use the groupname as tab title
-                      //   );
-                      // }).toList(),
-                      // //         ),
-                      //       ),
+                    bottom: TabBar(
+                      tabs: state.items
+                          .map((group) => Tab(text: group.groupName))
+                          .toList(),
+                    ),
 
-                      // body: TabBarView(
-                      //   children: [Text(tabTitles[0])]
-                      // ),
+                    // TabBar(tabs: [Tab(text: state.items['groupname'])])
+                    // bottom: TabBar(
+                    //   tabs: tabTitles.entries.map((title) => Tab(text: title.value)).toList(),
+                    // ),
+                    //          bottom: TabBar(
+                    //           controller: tabController,
+                    //           // tabs: tabTitles[0],
+                    //                     tabs: state.items[0]['symbols'].map<Widget>((symbol) {
+                    //   Tab(
+                    //     text: state.items[0]['groupname'], // Use the groupname as tab title
+                    //   );
+                    // }).toList(),
+                    // //         ),
+                    //       ),
 
-                      //                 body: TabBarView(controller: tabController, children: [
-                      //   ...generateTabView(tabTitles[tabController.index])
-                      // ]),
-                      ),
+                    // body: TabBarView(
+                    //   children: [Text(tabTitles[0])]
+                    // ),
+
+                    //                 body: TabBarView(controller: tabController, children: [
+                    //   ...generateTabView(tabTitles[tabController.index])
+                    // ]),
+                  ),
+                  // body: TabBarView(
+                  //   children: [
+                  //     ListView.builder(
+                  //       itemCount: state.items['symbols'].length,
+                  //       itemBuilder: (context, index) {
+                  //         Apidata symbol =
+                  //             state.items['symbols'][index] as Apidata;
+                  //         return ListTile(
+                  //           title: Text(symbol.name),
+                  //           subtitle: Text(symbol.contacts),
+                  //         );
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),
                   body: TabBarView(
-                    children: [
-                      ListView.builder(
-                        itemCount: state.items['symbols'].length,
-                        itemBuilder: (context, index) {
-                          Apidata symbol =
-                              state.items['symbols'][index] as Apidata;
-                          return ListTile(
-                            title: Text(symbol.name),
-                            subtitle: Text(symbol.contacts),
-                          );
-                        },
-                      ),
-                    ],
+                    children: state.items
+                        .map((group) => SymbolList(symbols: group.symbols))
+                        .toList(),
                   ),
                 ));
           }
@@ -160,13 +172,13 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
                       onPressed: () {
                         if (watchlistName.isNotEmpty) {
                           print('ifffffff');
-                          // tabBarBloc.add(AddTabEvent(watchlistName));
                           Navigator.of(context).pop();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SymbolScreen(
                                       watchlistName: watchlistName,
+                                      existingGroup:existingGroup
                                     )),
                           );
                         } else {
@@ -186,6 +198,25 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
 
   List<Widget> generateTabView(String title) {
     return [];
+  }
+}
+
+class SymbolList extends StatelessWidget {
+  final List<Apidata> symbols;
+  SymbolList({required this.symbols});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: symbols.length,
+      itemBuilder: (context, index) {
+        final symbol = symbols[index];
+        return ListTile(
+          title: Text(symbol.name),
+          subtitle: Text(symbol.contacts),
+        );
+      },
+    );
   }
 }
 

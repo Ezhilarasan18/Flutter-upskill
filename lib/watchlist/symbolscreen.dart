@@ -6,7 +6,8 @@ import 'package:evaluation_one/watchlist/tabscreen.dart';
 
 class SymbolScreen extends StatefulWidget {
   final String watchlistName;
-  const SymbolScreen({super.key, required this.watchlistName});
+  final List<GroupData> existingGroup;
+  const SymbolScreen({super.key, required this.watchlistName,required this.existingGroup});
 
   @override
   State<SymbolScreen> createState() => _SymbolScreenState();
@@ -108,7 +109,7 @@ class _SymbolScreenState extends State<SymbolScreen> {
           child: ElevatedButton(
             onPressed: () {
               context.read<TabBarBloc>().add(
-                  AddselectedsymbolscreateGroupEvent(widget.watchlistName));
+                  AddselectedsymbolscreateGroupEvent(widget.watchlistName,widget.existingGroup));
               Navigator.pop(context);
             },
             child: Text('Create Group'),

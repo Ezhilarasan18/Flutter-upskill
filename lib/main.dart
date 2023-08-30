@@ -4,6 +4,7 @@ import 'package:evaluation_one/watchlist/watchlisthome.dart';
 import 'package:evaluation_one/watchlist/tabbarbloc.dart';
 import 'package:evaluation_one/watchlist/apibloc.dart';
 // import 'package:evaluation_one/widget/tab.dart';
+import 'package:evaluation_one/widget/abc.dart';
 
 
 
@@ -39,6 +40,10 @@ class MyApp extends StatelessWidget {
       home: DynamicTabBarWidget(),
     )
     );
+
+  // return MaterialApp(
+  //   home: Abc(),
+  // );
   }
 }
 

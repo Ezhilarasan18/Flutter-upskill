@@ -5,7 +5,7 @@ import 'dart:convert';
 class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
   List<String> tabTitles = [];
 
-    List<Apidata> symbolsList = [];
+  List<Apidata> symbolsList = [];
   TabBarBloc() : super(TabBarInitialState()) {
     List<Apidata> _selectedsymbols = [];
     // on<AddTabEvent>((event, emit) {
@@ -51,12 +51,39 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
 
     on<AddselectedsymbolscreateGroupEvent>((event, emit) async {
       print('evemt${event.groupname}');
-      Map<String,dynamic> groupData={
-        'groupname':event.groupname,
-        'symbols':_selectedsymbols
+      Map<String, dynamic> groupData = {
+        'groupname': event.groupname,
+        'symbols': _selectedsymbols
       };
       print('groupData$groupData');
-      emit(AddselectedsymbolscreateGroupSuccessstate(groupData));
+//       List<GroupData> groupDataList = [
+//   GroupData(
+//     groupName: 'Group A',
+//     symbols: [
+//       Apidata(id: '1', name: 'Location 1', contacts: '123456', img: 'img1.jpg', isSelected: false),
+//       Apidata(id: '2', name: 'Location 2', contacts: '789012', img: 'img2.jpg', isSelected: false),
+//     ],
+//   ),
+//   GroupData(
+//     groupName: 'Group B',
+//     symbols: [
+//       Apidata(id: '3', name: 'Location 3', contacts: '345678', img: 'img3.jpg', isSelected: false),
+//       Apidata(id: '4', name: 'Location 4', contacts: '901234', img: 'img4.jpg', isSelected: false),
+//     ],
+//   ),
+//   // Add more groups as needed
+// ];
+      if (event.existingGroup.isEmpty) {
+        List<GroupData> groupDataList = [];
+        groupDataList.add(
+            GroupData(groupName: event.groupname, symbols: _selectedsymbols));
+        emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
+      } else {
+        List<GroupData> groupDataList = event.existingGroup;
+        groupDataList.add(
+            GroupData(groupName: event.groupname, symbols: _selectedsymbols));
+        emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
+      }
     });
   }
 }
@@ -114,12 +141,16 @@ class ItemSelectEvent extends TabBarEvent {
 
 class AddselectedsymbolscreateGroupEvent extends TabBarEvent {
   final String groupname;
-  AddselectedsymbolscreateGroupEvent(this.groupname);
+  final List<GroupData> existingGroup;
+  AddselectedsymbolscreateGroupEvent(this.groupname, this.existingGroup);
 }
 
 class AddselectedsymbolscreateGroupSuccessstate extends TabBarState {
-  final Map<String,dynamic> items;
+  final List<GroupData> items;
   AddselectedsymbolscreateGroupSuccessstate(this.items);
+
+  //  final Map<String,dynamic> items;
+  // AddselectedsymbolscreateGroupSuccessstate(this.items);
 }
 
 class AddselectedsymbolscreateGroupInitialstate extends TabBarState {}
@@ -134,6 +165,13 @@ class TabBarErrorState extends TabBarState {
   final String error;
 
   TabBarErrorState(this.error);
+}
+
+class GroupData {
+  final String groupName;
+  final List<Apidata> symbols;
+
+  GroupData({required this.groupName, required this.symbols});
 }
 
 class Apidata {
