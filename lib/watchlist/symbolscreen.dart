@@ -18,12 +18,11 @@ class _SymbolScreenState extends State<SymbolScreen> {
   void initState() {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
     tabBarBloc.add(ApiInitialEvent());
-    print('widget.watchlistName${widget.watchlistName}');
     super.initState();
   }
 
   late List<Apidata> datafromBloc;
-
+  bool showCreatebutton=false;
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
@@ -31,7 +30,19 @@ class _SymbolScreenState extends State<SymbolScreen> {
         body: Column(
       children: [
         Expanded(
-          child: BlocBuilder<TabBarBloc, TabBarState>(
+          child: BlocConsumer<TabBarBloc, TabBarState>(
+            listener: (context, state) {
+              setState(() {
+                showCreatebutton=true;
+              });
+            },
+            listenWhen: (previous, current) {
+              if(current is ApiLoadedState){
+                print('ApiLoadedState');
+                return true;
+              }
+              return false;
+            },
             builder: (context, state) {
               if (state is ApiLoadedState) {
                 datafromBloc = state.items;
@@ -100,10 +111,19 @@ class _SymbolScreenState extends State<SymbolScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
+                if (state is ApiErrorState) {
+               
+                return  Center(
+                  child: Text(state.error)
+                );
+              }
               return Container();
             },
           ),
         ),
+        Visibility(
+          visible: showCreatebutton,
+          child: 
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
@@ -115,6 +135,7 @@ class _SymbolScreenState extends State<SymbolScreen> {
             child: Text('Create Group'),
           ),
         ),
+          )
       ],
     ));
   }

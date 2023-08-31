@@ -75,12 +75,12 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
         //   }
         //   return false;
         // },
-        // buildWhen: (previous, current)  {
-        //   if(current is TabBarErrorState){
-        //     return false;
-        //   }
-        //   return true;
-        // },
+        buildWhen: (previous, current)  {
+          // if(previous is AddselectedsymbolscreateGroupSuccessstate|| current is AddselectedsymbolscreateGroupSuccessstate){
+            return true;
+          // }
+          // return false;
+        },
         builder: (context, state) {
           if (state is AddselectedsymbolscreateGroupInitialstate) {
             return const Center(child: Text('No tabs yet.'));

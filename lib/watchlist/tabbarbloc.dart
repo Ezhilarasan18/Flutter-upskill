@@ -8,6 +8,8 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
   List<Apidata> symbolsList = [];
   TabBarBloc() : super(TabBarInitialState()) {
     List<Apidata> _selectedsymbols = [];
+          List<GroupData> groupDataList = [];
+
     // on<AddTabEvent>((event, emit) {
     //   bool nameExists = tabTitles.any((item) => item == event.tabTitle);
     //   print('nameExists$nameExists');
@@ -31,6 +33,9 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
       print('items$items');
       symbolsList = items;
       emit(ApiLoadedState(items));
+      if(items.isEmpty){
+        emit(ApiErrorState('something went wrong'));
+      }
     });
 
     on<ItemSelectEvent>((event, emit) async {
@@ -51,11 +56,11 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
 
     on<AddselectedsymbolscreateGroupEvent>((event, emit) async {
       print('evemt${event.groupname}');
-      Map<String, dynamic> groupData = {
-        'groupname': event.groupname,
-        'symbols': _selectedsymbols
-      };
-      print('groupData$groupData');
+      // Map<String, dynamic> groupData = {
+      //   'groupname': event.groupname,
+      //   'symbols': _selectedsymbols
+      // };
+      // print('groupData$groupData');
 //       List<GroupData> groupDataList = [
 //   GroupData(
 //     groupName: 'Group A',
@@ -73,17 +78,31 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
 //   ),
 //   // Add more groups as needed
 // ];
-      if (event.existingGroup.isEmpty) {
-        List<GroupData> groupDataList = [];
-        groupDataList.add(
-            GroupData(groupName: event.groupname, symbols: _selectedsymbols));
-        emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
-      } else {
-        List<GroupData> groupDataList = event.existingGroup;
-        groupDataList.add(
-            GroupData(groupName: event.groupname, symbols: _selectedsymbols));
-        emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
-      }
+      // if (_selectedsymbols.isNotEmpty) {
+      //   print('1');
+        if (event.existingGroup.isEmpty&& _selectedsymbols.isNotEmpty) {
+        print('1');
+          groupDataList.add(
+              GroupData(groupName: event.groupname, symbols: _selectedsymbols));
+          _selectedsymbols=[];
+          emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
+        } else if(event.existingGroup.isNotEmpty&& _selectedsymbols.isNotEmpty) {
+        print('2');
+          List<GroupData> groupDataList = event.existingGroup;
+          groupDataList.add(
+              GroupData(groupName: event.groupname, symbols: _selectedsymbols));
+          _selectedsymbols=[];
+          emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
+
+        }else if(event.existingGroup.isNotEmpty&&_selectedsymbols.isEmpty){
+          emit(AddselectedsymbolscreateGroupSuccessstate(event.existingGroup));
+        }
+        // emit(AddselectedsymbolscreateGroupSuccessstate(event.existingGroup));
+
+      // }
+        // print('4');
+        // _selectedsymbols = [];
+        //   emit(AddselectedsymbolscreateGroupSuccessstate(event.existingGroup));
     });
   }
 }
