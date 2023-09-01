@@ -13,21 +13,21 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
     with SingleTickerProviderStateMixin {
   String watchlistName = '';
   bool showErrorDialog = false;
-   List<GroupData> existingGroup=[];
+  List<GroupData> existingGroup = [];
 
   void _showErrorDialog(BuildContext context, String error) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title:const Text('Error'),
           content: Text(error),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context);
               },
-              child: Text('OK'),
+              child:const Text('OK'),
             ),
           ],
         );
@@ -40,55 +40,23 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
-    final List<String> tabTitles = [];
-    for (var key in tabBarBloc.tabTitles) {
-      tabTitles.add(key);
-    }
-    tabController = TabController(length: tabTitles.length, vsync: this);
+   
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dynamic Tab Bar'),
+        title: const Text('Dashboard'),
       ),
       body: BlocConsumer<TabBarBloc, TabBarState>(
-        listener: (context, state) {
-          //  showDialog(
-          //         context: context,
-          //         builder: (BuildContext context) {
-          //           return AlertDialog(
-          //             title: Text('Error'),
-          //             content: Text('error'),
-          //             actions: [
-          //               TextButton(
-          //                 onPressed: () async {
-          //                   Navigator.pop(context);
-          //                 },
-          //                 child: Text('OK'),
-          //               ),
-          //             ],
-          //           );
-          //         },
-          //       );
-        },
-        // listenWhen: (previous, current)  {
-        //   if(previous is TabBarUpdatedState && current is TabBarErrorState){
-        //     return true;
-        //   }
-        //   return false;
-        // },
-        buildWhen: (previous, current)  {
-          // if(previous is AddselectedsymbolscreateGroupSuccessstate|| current is AddselectedsymbolscreateGroupSuccessstate){
-            return true;
-          // }
-          // return false;
+        listener: (context, state) {},
+        buildWhen: (previous, current) {
+          return true;
         },
         builder: (context, state) {
-          if (state is AddselectedsymbolscreateGroupInitialstate) {
-            return const Center(child: Text('No tabs yet.'));
+          if (state is TabBarInitialState) {
+            return const Center(child: Text('No watchlis created'));
           }
           if (state is AddselectedsymbolscreateGroupSuccessstate) {
             final tabTitles = state.items;
-            existingGroup=state.items;
-            print('state.items${state.items}');
+            existingGroup = state.items;
             return DefaultTabController(
                 length: tabTitles.length,
                 child: Scaffold(
@@ -98,51 +66,14 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
                           .map((group) => Tab(text: group.groupName))
                           .toList(),
                     ),
-
-                    // TabBar(tabs: [Tab(text: state.items['groupname'])])
-                    // bottom: TabBar(
-                    //   tabs: tabTitles.entries.map((title) => Tab(text: title.value)).toList(),
-                    // ),
-                    //          bottom: TabBar(
-                    //           controller: tabController,
-                    //           // tabs: tabTitles[0],
-                    //                     tabs: state.items[0]['symbols'].map<Widget>((symbol) {
-                    //   Tab(
-                    //     text: state.items[0]['groupname'], // Use the groupname as tab title
-                    //   );
-                    // }).toList(),
-                    // //         ),
-                    //       ),
-
-                    // body: TabBarView(
-                    //   children: [Text(tabTitles[0])]
-                    // ),
-
-                    //                 body: TabBarView(controller: tabController, children: [
-                    //   ...generateTabView(tabTitles[tabController.index])
-                    // ]),
                   ),
-                  // body: TabBarView(
-                  //   children: [
-                  //     ListView.builder(
-                  //       itemCount: state.items['symbols'].length,
-                  //       itemBuilder: (context, index) {
-                  //         Apidata symbol =
-                  //             state.items['symbols'][index] as Apidata;
-                  //         return ListTile(
-                  //           title: Text(symbol.name),
-                  //           subtitle: Text(symbol.contacts),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
                   body: TabBarView(
                     children: state.items
                         .map((group) => SymbolList(symbols: group.symbols))
                         .toList(),
                   ),
-                ));
+                ),
+                );
           }
           return Container();
         },
@@ -163,7 +94,6 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
                   actions: [
                     TextButton(
                       onPressed: () {
-                        // Close the dialog
                         Navigator.of(context).pop();
                       },
                       child: const Text('Cancel'),
@@ -171,21 +101,20 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
                     TextButton(
                       onPressed: () {
                         if (watchlistName.isNotEmpty) {
-                          print('ifffffff');
                           Navigator.of(context).pop();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SymbolScreen(
-                                      watchlistName: watchlistName,
-                                      existingGroup:existingGroup
-                                    )),
+                              builder: (context) => SymbolScreen(
+                                  watchlistName: watchlistName,
+                                  existingGroup: existingGroup),
+                            ),
                           );
                         } else {
-                          print('elseeeee');
+                          _showErrorDialog(context,"Enter a group name");
                         }
                       },
-                      child: const Text('Submit'),
+                      child: const Text('Next'),
                     ),
                   ],
                 );
@@ -231,10 +160,9 @@ class FailureWidget extends StatelessWidget {
         Text('Failure: $error'),
         ElevatedButton(
           onPressed: () {
-            // Retry or navigate to another screen, etc.
             Navigator.pop(context);
           },
-          child: Text('Retry'),
+          child: const Text('Retry'),
         ),
       ],
     );
