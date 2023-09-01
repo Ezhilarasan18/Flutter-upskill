@@ -39,8 +39,6 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
   late TabController tabController;
   @override
   Widget build(BuildContext context) {
-    final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -57,7 +55,6 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
           if (state is AddselectedsymbolscreateGroupSuccessstate) {
             final tabTitles = state.items;
             existingGroup = state.items;
-            print('existingGroup$existingGroup');
             return DefaultTabController(
               length: tabTitles.length,
               child: Scaffold(
@@ -105,7 +102,7 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
                           if (existingGroup.isNotEmpty) {
                             for (var groupData in existingGroup) {
                               if (groupData.groupName == watchlistName) {
-                                _showErrorDialog(context, 'Name already exist');
+                                _showErrorDialog(context, 'Group already exist,try with different name');
                               } else {
                                 Navigator.of(context).pop();
                                 Navigator.push(
@@ -143,15 +140,11 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
       ),
     );
   }
-
-  List<Widget> generateTabView(String title) {
-    return [];
-  }
 }
 
 class SymbolList extends StatelessWidget {
   final List<Apidata> symbols;
-  SymbolList({required this.symbols});
+  const SymbolList({required this.symbols,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -164,26 +157,6 @@ class SymbolList extends StatelessWidget {
           subtitle: Text(symbol.contacts),
         );
       },
-    );
-  }
-}
-
-class FailureWidget extends StatelessWidget {
-  const FailureWidget({super.key, required this.error});
-  final String error;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('Failure: $error'),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Retry'),
-        ),
-      ],
     );
   }
 }

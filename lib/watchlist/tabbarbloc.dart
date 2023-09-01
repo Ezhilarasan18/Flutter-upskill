@@ -1,22 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:evaluation_one/watchlist/api/api.dart';
-
+import 'package:connectivity/connectivity.dart';
 
 class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
   List<Apidata> symbolsList = [];
   TabBarBloc() : super(TabBarInitialState()) {
-    List<Apidata> _selectedsymbols = [];
+    List<Apidata> selectedsymbols = [];
     List<GroupData> groupDataList = [];
     List<Apidata> sortAtoZ = [];
     on<ApiInitialEvent>((event, emit) async {
       emit(ApiInitialState());
-      final List<Apidata> items = await fetchData();
-      symbolsList = items;
-      emit(ApiLoadedState(items));
-      if (items.isEmpty) {
-        emit(ApiErrorState('something went wrong'));
+      final isNetavailable = await checkNetwork();
+      if (isNetavailable) {
+        final List<Apidata> items = await fetchData();
+        symbolsList = items;
+        if (items.isEmpty) {
+          emit(ApiErrorState('something went wrong'));
+        }
+        if (items.isNotEmpty) {
+          emit(ApiLoadedState(items));
+        }
+      } else {
+        emit(ApiErrorState('Network not available'));
       }
     });
     on<SortByAtozEvent>((event, emit) async {
@@ -60,29 +65,28 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
       emit(ApiLoadedState(updatedSymbol));
       List<Apidata> selectedItems =
           updatedSymbol.where((item) => item.isSelected).toList();
-      _selectedsymbols = selectedItems;
+      selectedsymbols = selectedItems;
     });
 
     on<AddselectedsymbolscreateGroupEvent>((event, emit) async {
-      if (event.existingGroup.isEmpty && _selectedsymbols.isNotEmpty) {
+      if (event.existingGroup.isEmpty && selectedsymbols.isNotEmpty) {
         groupDataList.add(
-            GroupData(groupName: event.groupname, symbols: _selectedsymbols));
-        _selectedsymbols = [];
+            GroupData(groupName: event.groupname, symbols: selectedsymbols));
+        selectedsymbols = [];
         emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
       } else if (event.existingGroup.isNotEmpty &&
-          _selectedsymbols.isNotEmpty) {
+          selectedsymbols.isNotEmpty) {
         List<GroupData> groupDataList = event.existingGroup;
         groupDataList.add(
-            GroupData(groupName: event.groupname, symbols: _selectedsymbols));
-        _selectedsymbols = [];
+            GroupData(groupName: event.groupname, symbols: selectedsymbols));
+        selectedsymbols = [];
         emit(AddselectedsymbolscreateGroupSuccessstate(groupDataList));
-      } else if (event.existingGroup.isNotEmpty && _selectedsymbols.isEmpty) {
+      } else if (event.existingGroup.isNotEmpty && selectedsymbols.isEmpty) {
         emit(AddselectedsymbolscreateGroupSuccessstate(event.existingGroup));
       }
     });
   }
 }
-
 
 abstract class TabBarEvent {}
 
@@ -120,10 +124,10 @@ class AddselectedsymbolscreateGroupEvent extends TabBarEvent {
 class SortByAtozEvent extends TabBarEvent {}
 
 class SortByZtoAEvent extends TabBarEvent {}
+
 class SortBy0to9Event extends TabBarEvent {}
 
 class SortBy9to0Event extends TabBarEvent {}
-
 
 class AddselectedsymbolscreateGroupSuccessstate extends TabBarState {
   final List<GroupData> items;
@@ -167,4 +171,9 @@ class Apidata {
         img: json['url'],
         isSelected: json['isSelected']);
   }
+}
+
+Future<bool> checkNetwork() async {
+  var connectivityResult = await Connectivity().checkConnectivity();
+  return connectivityResult != ConnectivityResult.none;
 }

@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   return BlocProvider(
     create: (context)=>TabBarBloc(),
     child: const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DynamicTabBarWidget(),
     )
     );
