@@ -20,14 +20,14 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title:const Text('Error'),
+          title: const Text('Error'),
           content: Text(error),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child:const Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -40,7 +40,7 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
   @override
   Widget build(BuildContext context) {
     final tabBarBloc = BlocProvider.of<TabBarBloc>(context);
-   
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -57,23 +57,24 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
           if (state is AddselectedsymbolscreateGroupSuccessstate) {
             final tabTitles = state.items;
             existingGroup = state.items;
+            print('existingGroup$existingGroup');
             return DefaultTabController(
-                length: tabTitles.length,
-                child: Scaffold(
-                  appBar: AppBar(
-                    bottom: TabBar(
-                      tabs: state.items
-                          .map((group) => Tab(text: group.groupName))
-                          .toList(),
-                    ),
-                  ),
-                  body: TabBarView(
-                    children: state.items
-                        .map((group) => SymbolList(symbols: group.symbols))
+              length: tabTitles.length,
+              child: Scaffold(
+                appBar: AppBar(
+                  bottom: TabBar(
+                    tabs: state.items
+                        .map((group) => Tab(text: group.groupName))
                         .toList(),
                   ),
                 ),
-                );
+                body: TabBarView(
+                  children: state.items
+                      .map((group) => SymbolList(symbols: group.symbols))
+                      .toList(),
+                ),
+              ),
+            );
           }
           return Container();
         },
@@ -101,17 +102,35 @@ class _DynamicTabBarWidgetState extends State<DynamicTabBarWidget>
                     TextButton(
                       onPressed: () {
                         if (watchlistName.isNotEmpty) {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SymbolScreen(
-                                  watchlistName: watchlistName,
-                                  existingGroup: existingGroup),
-                            ),
-                          );
+                          if (existingGroup.isNotEmpty) {
+                            for (var groupData in existingGroup) {
+                              if (groupData.groupName == watchlistName) {
+                                _showErrorDialog(context, 'Name already exist');
+                              } else {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SymbolScreen(
+                                        watchlistName: watchlistName,
+                                        existingGroup: existingGroup),
+                                  ),
+                                );
+                              }
+                            }
+                          } else {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SymbolScreen(
+                                    watchlistName: watchlistName,
+                                    existingGroup: existingGroup),
+                              ),
+                            );
+                          }
                         } else {
-                          _showErrorDialog(context,"Enter a group name");
+                          _showErrorDialog(context, "Enter a group name");
                         }
                       },
                       child: const Text('Next'),

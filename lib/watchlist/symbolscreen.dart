@@ -32,27 +32,127 @@ class _SymbolScreenState extends State<SymbolScreen> {
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16), 
+              topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
             ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                title: const Text('Sort by Name'),
-                onTap: () {
-                  context
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    'Sorting',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.blue),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    child: const Text('Clear',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.blue)),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    'Alphabetically',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    child: const Row(
+                      children: [
+                        Text('A'),
+                        Icon(Icons.arrow_downward),
+                        Text('Z')
+                      ],
+                    ),
+                    onTap: () {
+                      context
+                      .read<TabBarBloc>()
+                      .add(SortByAtozEvent());
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Container(width: 20,),
+                  InkWell(
+                    child: const Row(
+                      children: [
+                        Text('Z'),
+                        Icon(Icons.arrow_downward),
+                        Text('A')
+                      ],
+                    ),
+                    onTap: () {
+                      context
+                      .read<TabBarBloc>()
+                      .add(SortByZtoAEvent());
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+              const Divider(
+                color: Colors.grey,
+                thickness: 1.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    'User Id',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    child: const Row(
+                      children: [
+                        Text('0'),
+                        Icon(Icons.arrow_downward),
+                        Text('9')
+                      ],
+                    ),
+                    onTap: () {
+                      context
+                      .read<TabBarBloc>()
+                      .add(SortBy0to9Event());
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Container(
+                    width: 20,
+                  ),
+                  InkWell(
+                    child: const Row(
+                      children: [
+                        Text('9'),
+                        Icon(Icons.arrow_upward),
+                        Text('0')
+                      ],
+                    ),
+                    onTap: () {
+                      context
                       .read<TabBarBloc>()
                       .add(SortBy9to0Event());
-                  Navigator.pop(context);
-                },
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
               ),
-              ListTile(
-                title:const Text('Sort by Number'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
+              const Divider(
+                color: Colors.grey,
+                thickness: 1.0,
               ),
             ],
           ),
@@ -128,7 +228,7 @@ class _SymbolScreenState extends State<SymbolScreen> {
                             widget.watchlistName, widget.existingGroup));
                     Navigator.pop(context);
                   },
-                  child:const Text('Create Group'),
+                  child: const Text('Create Group'),
                 ),
               ),
             )
@@ -139,8 +239,7 @@ class _SymbolScreenState extends State<SymbolScreen> {
             child: Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 20, right: 0),
+                  padding: const EdgeInsets.only(bottom: 20, right: 0),
                   child: Container(
                     width: 60,
                     height: 60,
@@ -188,9 +287,7 @@ class _SymbolScreenState extends State<SymbolScreen> {
                 subtitle: Text(symbol.contacts),
                 value: symbol.isSelected,
                 onChanged: (newValue) {
-                  context
-                      .read<TabBarBloc>()
-                      .add(ItemSelectEvent(symbol));
+                  context.read<TabBarBloc>().add(ItemSelectEvent(symbol));
                 },
                 controlAffinity: ListTileControlAffinity.trailing,
               ),

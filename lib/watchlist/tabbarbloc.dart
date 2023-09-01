@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:evaluation_one/watchlist/api/api.dart';
+
 
 class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
   List<Apidata> symbolsList = [];
@@ -33,14 +35,14 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
 
     on<SortBy0to9Event>((event, emit) async {
       sortAtoZ = List.of(symbolsList);
-      sortAtoZ.sort((a, b) => b.contacts.compareTo(a.contacts));
+      sortAtoZ.sort((a, b) => a.contacts.compareTo(b.contacts));
       symbolsList = sortAtoZ;
       emit(ApiLoadedState(sortAtoZ));
     });
 
     on<SortBy9to0Event>((event, emit) async {
       sortAtoZ = List.of(symbolsList);
-      sortAtoZ.sort((a, b) => a.contacts.compareTo(b.contacts));
+      sortAtoZ.sort((a, b) => b.contacts.compareTo(a.contacts));
       symbolsList = sortAtoZ;
       emit(ApiLoadedState(sortAtoZ));
     });
@@ -81,22 +83,6 @@ class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
   }
 }
 
-Future<List<Apidata>> fetchData() async {
-  try {
-    final response = await http.get(Uri.parse(
-        'http://5e53a76a31b9970014cf7c8c.mockapi.io/msf/getContacts'));
-    List<Map<String, dynamic>> parsedResponse =
-        jsonDecode(response.body).cast<Map<String, dynamic>>();
-    for (var item in parsedResponse) {
-      item['isSelected'] = false;
-    }
-    final result =
-        parsedResponse.map((json) => Apidata.fromJson(json)).toList();
-    return result;
-  } catch (e) {
-    return [];
-  }
-}
 
 abstract class TabBarEvent {}
 
