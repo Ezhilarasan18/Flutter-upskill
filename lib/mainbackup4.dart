@@ -76,16 +76,13 @@ class SpeedometerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final centerX = size.width / 2;
-    final centerYArcs = size.height * 2 / 2.3; // Move only the arcs upwards
-    final centerYNeedle = size.height; // Keep the needle at the bottom
+    final centerY = size.height / 2;
     final radius = size.width / 2;
 
-    final totalArcWidth = pi; // Total width of the semicircle
-    final spaceBetweenArcs = totalArcWidth / (arcCount - 1); // Space between arcs
-    final arcWidth = spaceBetweenArcs - 0.1; // Adjusted width of each arc
+    final arcWidth = pi / arcCount; // Width of each arc
 
     for (int i = 0; i < arcCount; i++) {
-      final arcStart = -pi / 0.92 + (i * spaceBetweenArcs);
+      final arcStart = -pi / 1 + (i * arcWidth);  
       final arcEnd = arcStart + arcWidth;
 
       final paint = Paint()
@@ -101,7 +98,7 @@ class SpeedometerPainter extends CustomPainter {
       }
 
       canvas.drawArc(
-        Rect.fromCircle(center: Offset(centerX, centerYArcs), radius: radius),
+        Rect.fromCircle(center: Offset(centerX, centerY), radius: radius),
         arcStart,
         arcEnd - arcStart,
         false,
@@ -117,10 +114,10 @@ class SpeedometerPainter extends CustomPainter {
     final needleAngle = -pi / 1 + ((value - minSpeed) / (maxSpeed - minSpeed)) * pi;
 
     canvas.drawLine(
-      Offset(centerX, centerYNeedle),
+      Offset(centerX, centerY),
       Offset(
         centerX + radius * 0.8 * cos(needleAngle),
-        centerYNeedle + radius * 0.8 * sin(needleAngle),
+        centerY + radius * 0.8 * sin(needleAngle),
       ),
       needlePaint,
     );
@@ -131,5 +128,4 @@ class SpeedometerPainter extends CustomPainter {
     return true;
   }
 }
-
 
