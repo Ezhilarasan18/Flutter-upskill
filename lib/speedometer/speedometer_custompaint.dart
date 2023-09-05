@@ -1,93 +1,80 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class SpeedometerWidget extends StatelessWidget {
-  final double userInput;
-
-  SpeedometerWidget({required this.userInput});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size:const Size(200, 200), // Adjust the size as needed
-      painter: SpeedometerPainter(userInput: userInput),
-    );
-  }
-}
-
 class SpeedometerPainter extends CustomPainter {
-  final double userInput;
+  final double value;
+  final double minSpeed;
+  final double maxSpeed;
+  final int arcCount;
 
-  SpeedometerPainter({required this.userInput});
+  SpeedometerPainter(this.value, this.minSpeed, this.maxSpeed, this.arcCount);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double centerX = size.width / 2;
-    final double centerY = size.height;
+    final centerX = size.width / 2;
+    final centerYArcs = size.height * 2 / 2.3; // Move only the arcs upwards
+    final centerYNeedle = size.height; // Keep the needle at the bottom
+    final radius = size.width / 2;
 
-    final double radius = size.height;
-    final double startAngle = pi;
-    final double endAngle = 0;
+    const totalArcWidth = pi; // Total width of the semicircle
+    final spaceBetweenArcs = totalArcWidth / (arcCount - 1); // Space between arcs
+    final arcWidth = spaceBetweenArcs - 0.1; // Adjusted width of each arc
 
-    final Paint outerCirclePaint = Paint()
-      ..color = Colors.grey
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 10.0;
+    for (int i = 0; i < arcCount; i++) {
+      final arcStart = -pi / 0.92 + (i * spaceBetweenArcs);
+      final arcEnd = arcStart + arcWidth;
 
-    final Paint innerCirclePaint = Paint()
-      ..color = Colors.blue
-      ..style = PaintingStyle.fill;
+      final paint = Paint()
+        ..strokeWidth = 11
+        ..style = PaintingStyle.stroke;
 
-    final Paint needlePaint = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 5.0;
+      if (i < arcCount ~/ 2) {
+        // Left side arcs (Red color)
+        paint.color = Colors.red;
+      } else {
+        // Right side arcs (Green color)
+        paint.color = Colors.green;
+      }
 
-    canvas.drawArc(
-      Rect.fromCircle(center: Offset(centerX, centerY), radius: radius),
-      startAngle,
-      endAngle,
-      false,
-      outerCirclePaint,
-    );
-
-    canvas.drawArc(
-      Rect.fromCircle(center: Offset(centerX, centerY), radius: radius - 10),
-      startAngle,
-      endAngle,
-      false,
-      innerCirclePaint,
-    );
-
-    
-    for (int i = 0; i <= 180; i += 30) {
-      final angle = startAngle + (i * (pi / 180));
-      final tickStartX = centerX + (radius - 20) * cos(angle);
-      final tickStartY = centerY + (radius - 20) * sin(angle);
-      final tickEndX = centerX + (radius - 10) * cos(angle);
-      final tickEndY = centerY + (radius - 10) * sin(angle);
-
-      canvas.drawLine(
-        Offset(tickStartX, tickStartY),
-        Offset(tickEndX, tickEndY),
-        outerCirclePaint,
+      canvas.drawArc(
+        Rect.fromCircle(center: Offset(centerX, centerYArcs), radius: radius + 25),
+        arcStart,
+        arcEnd - arcStart,
+        false,
+        paint,
       );
     }
 
-    // Calculate and draw the needle
-    final angle = startAngle+ (userInput / 35 * pi);
-    final needleX = centerX + (radius - 25) * cos(angle);
-    final needleY = centerY + (radius - 25) * sin(angle);
+    final needlePaint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
 
+    final needleAngle = -pi / 1 + ((value - minSpeed) / (maxSpeed - minSpeed)) * pi;
+
+    // Calculate the starting and ending points of the needle
+    final startX = centerX;
+    final startY = centerYNeedle;
+    final endX = centerX + radius * 1 * cos(needleAngle);
+    final endY = centerYNeedle + radius * 0.8 * sin(needleAngle);
+
+    // Draw the needle
     canvas.drawLine(
-      Offset(centerX, centerY),
-      Offset(needleX, needleY),
+      Offset(startX, startY),
+      Offset(endX, endY),
       needlePaint,
     );
+    
+
+    // Draw a small circle at the starting point of the needle
+    final circlePaint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(Offset(startX, startY), 8, circlePaint);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }
