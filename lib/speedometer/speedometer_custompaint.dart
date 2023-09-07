@@ -8,8 +8,12 @@ class SpeedometerPainter extends CustomPainter {
   final double minSpeed;
   final double maxSpeed;
   final int arcCount;
+  final Color needleColor;
+  final Color leftarcColor;
+  final Color rightarcColor;
 
-  SpeedometerPainter(this.value, this.minSpeed, this.maxSpeed, this.arcCount);
+  SpeedometerPainter(this.value, this.minSpeed, this.maxSpeed, this.arcCount,
+      this.needleColor, this.leftarcColor, this.rightarcColor);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -19,7 +23,8 @@ class SpeedometerPainter extends CustomPainter {
     final radius = size.width / 2;
 
     const totalArcWidth = pi; // Total width of the semicircle
-    final spaceBetweenArcs = totalArcWidth / (arcCount - 1); // Space between arcs
+    final spaceBetweenArcs =
+        totalArcWidth / (arcCount - 1); // Space between arcs
     final arcWidth = spaceBetweenArcs - 0.1; // Adjusted width of each arc
 
     for (int i = 0; i < arcCount; i++) {
@@ -32,14 +37,15 @@ class SpeedometerPainter extends CustomPainter {
 
       if (i < arcCount ~/ 2) {
         // Left side arcs (Red color)
-        paint.color = Colors.red;
+        paint.color = leftarcColor;
       } else {
         // Right side arcs (Green color)
-        paint.color = Colors.green;
+        paint.color = rightarcColor;
       }
 
       canvas.drawArc(
-        Rect.fromCircle(center: Offset(centerX, centerYArcs), radius: radius + 25),
+        Rect.fromCircle(
+            center: Offset(centerX, centerYArcs), radius: radius + 25),
         arcStart,
         arcEnd - arcStart,
         false,
@@ -48,11 +54,12 @@ class SpeedometerPainter extends CustomPainter {
     }
 
     final needlePaint = Paint()
-      ..color = Colors.black
+      ..color = needleColor
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    final needleAngle = -pi / 1 + ((value - minSpeed) / (maxSpeed - minSpeed)) * pi;
+    final needleAngle =
+        -pi / 1 + ((value - minSpeed) / (maxSpeed - minSpeed)) * pi;
 
     // Calculate the starting and ending points of the needle
     final startX = centerX;
@@ -66,7 +73,6 @@ class SpeedometerPainter extends CustomPainter {
       Offset(endX, endY),
       needlePaint,
     );
-    
 
     // Draw a small circle at the starting point of the needle
     final circlePaint = Paint()
@@ -82,29 +88,26 @@ class SpeedometerPainter extends CustomPainter {
 }
 
 class ReadingValue extends CustomPainter {
+  ReadingValue(this.readingValues);
+  final List readingValues;
   double pi = math.pi;
-
 
   double degreeToRadian(double degree) {
     return degree * pi / 180;
   }
 
-  double radianToDegree(double radian) {
-    return radian * 180 / pi;
-  }
 //s3
   @override
   void paint(Canvas canvas, Size size) {
     var radius = size.width / 2;
 
     final TextPainter textPainter = TextPainter(
-        text: TextSpan(text:Constants.s3, style:const TextStyle(color: Colors.red)),
+        text: TextSpan(
+            text: readingValues[0], style: const TextStyle(color: Colors.red)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width);
-    textPainter.paint(canvas, Offset(-40, size.height/0.99));
-
-
+    textPainter.paint(canvas, Offset(-40, size.height / 0.99));
 
     // S2
     var dx = radius -
@@ -115,7 +118,8 @@ class ReadingValue extends CustomPainter {
         30 * math.tan(degreeToRadian(-45));
     var offsetS2 = Offset(dx, dy);
     final TextPainter textPainter2 = TextPainter(
-        text: TextSpan(text:Constants.s2, style:const TextStyle(color: Colors.red)),
+        text: TextSpan(
+            text: readingValues[1], style: const TextStyle(color: Colors.red)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width / 2);
@@ -130,7 +134,8 @@ class ReadingValue extends CustomPainter {
         32 * math.tan(degreeToRadian(-70));
     var offsetS1 = Offset(dx, dy);
     final TextPainter textPainter3 = TextPainter(
-        text: TextSpan(text:Constants.s1, style:const TextStyle(color: Colors.red)),
+        text: TextSpan(
+            text: readingValues[2], style: const TextStyle(color: Colors.red)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width);
@@ -141,12 +146,12 @@ class ReadingValue extends CustomPainter {
     dy = 65;
     var offsetp = Offset(dx, dy);
     final TextPainter textPainter4 = TextPainter(
-        text: TextSpan(text: Constants.pivot, style: const TextStyle(color: Colors.black)),
+        text: TextSpan(
+            text: Constants.pivot, style: const TextStyle(color: Colors.black)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width);
     textPainter4.paint(canvas, offsetp);
-
 
     // green readings
 
@@ -155,7 +160,9 @@ class ReadingValue extends CustomPainter {
     dy = size.height / 1;
     var offsetR3 = Offset(dx, dy);
     final TextPainter textPainter5 = TextPainter(
-        text: TextSpan(text:Constants.r3, style:const TextStyle(color: Colors.green)),
+        text: TextSpan(
+            text: readingValues[3],
+            style: const TextStyle(color: Colors.green)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width);
@@ -164,9 +171,11 @@ class ReadingValue extends CustomPainter {
     //R2
     dx = radius + (radius * math.cos(degreeToRadian(1)));
     dy = radius - (radius * math.sin(degreeToRadian(-140)));
-    var offsetR2 = Offset(dx+25, dy);
+    var offsetR2 = Offset(dx + 25, dy);
     final TextPainter textPainter6 = TextPainter(
-        text: TextSpan(text:Constants.r2, style:const TextStyle(color: Colors.green)),
+        text: TextSpan(
+            text: readingValues[4],
+            style: const TextStyle(color: Colors.green)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width);
@@ -177,7 +186,9 @@ class ReadingValue extends CustomPainter {
     dy = radius - (radius * math.sin(degreeToRadian(8)));
     var offsetR1 = Offset(dx, dy);
     final TextPainter textPainter7 = TextPainter(
-        text: TextSpan(text: Constants.r1, style: const TextStyle(color: Colors.green)),
+        text: TextSpan(
+            text: readingValues[5],
+            style: const TextStyle(color: Colors.green)),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: size.width);

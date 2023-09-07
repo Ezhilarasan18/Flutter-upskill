@@ -22,11 +22,13 @@ class _SpeedometerState extends State<Speedometer> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CustomPaint(
-          size: Size(customHeight, customWidth),
-          painter: SpeedometerPainter(value, minSpeed, maxSpeed, arcCount),
-          foregroundPainter: ReadingValue(),
-        ),
+        Speedometer_Widget(
+            customHeight: customHeight,
+            customWidth: customWidth,
+            value: value,
+            minSpeed: minSpeed,
+            maxSpeed: maxSpeed,
+            arcCount: arcCount),
         const SizedBox(height: 20),
         Text(
           'Speed: ${value.toStringAsFixed(1)}',
@@ -47,6 +49,40 @@ class _SpeedometerState extends State<Speedometer> {
           },
         ),
       ],
+    );
+  }
+}
+
+// ignore: camel_case_types
+class Speedometer_Widget extends StatelessWidget {
+  Speedometer_Widget({
+    super.key,
+    required this.customHeight,
+    required this.customWidth,
+    required this.value,
+    required this.minSpeed,
+    required this.maxSpeed,
+    required this.arcCount,
+  });
+
+  final double customHeight;
+  final double customWidth;
+  final double value;
+  final double minSpeed;
+  final double maxSpeed;
+  final int arcCount;
+  final Color needleColor = Colors.black;
+  final Color leftarcColor = Colors.red;
+  final Color rightarcColor = Colors.green;
+
+  final List readingValues = ['S3', 'S2', 'S1', 'R3', 'R2', 'R1'];
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(customHeight, customWidth),
+      painter: SpeedometerPainter(value, minSpeed, maxSpeed, arcCount,
+          needleColor, leftarcColor, rightarcColor),
+      foregroundPainter: ReadingValue(readingValues),
     );
   }
 }
